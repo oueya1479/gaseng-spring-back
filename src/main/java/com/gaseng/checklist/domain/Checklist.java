@@ -34,7 +34,7 @@ public class Checklist {
     private String chkCallPlace;
 
     private CheckType chkType;
-    
+
     @Builder
     public Checklist(Member member, CheckSleepingHabit chkSleepingHabit, CheckCigarette chkCigarette, Date chkSleepTime, String chkMbti, String chkCallPlace, CheckType chkType) {
         this.chkSleepingHabit = chkSleepingHabit;
@@ -44,6 +44,15 @@ public class Checklist {
         this.chkCallPlace = chkCallPlace;
         this.chkType = chkType;
         this.member = member;
+    }
+
+    public void update(Checklist updatedChecklist) {
+        this.chkSleepingHabit = updatedChecklist.getChkSleepingHabit();
+        this.chkCigarette = updatedChecklist.getChkCigarette();
+        this.chkSleepTime = updatedChecklist.getChkSleepTime();
+        this.chkMbti = updatedChecklist.getChkMbti();
+        this.chkCallPlace = updatedChecklist.getChkCallPlace();
+        this.chkType = updatedChecklist.getChkType();
     }
 
 }
