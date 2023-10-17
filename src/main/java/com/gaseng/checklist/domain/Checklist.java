@@ -54,5 +54,8 @@ public class Checklist {
         this.chkCallPlace = updatedChecklist.getChkCallPlace();
         this.chkType = updatedChecklist.getChkType();
     }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 }
