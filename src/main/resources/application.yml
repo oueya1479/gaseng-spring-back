@@ -8,7 +8,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         show_sql: false
@@ -18,3 +18,7 @@ spring:
   config:
     import:
       - classpath:secret.yml
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
