@@ -36,8 +36,8 @@ jobs:
       - name: Docker build & push to docker repo
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/gaseng .
-          docker push ${{ secrets.DOCKER_REPO }}/gaseng
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/gaseng .
+          docker push ${{ secrets.DOCKER_USERNAME }}/gaseng
 
       - name: Deploy to server
         uses: appleboy/ssh-action@master
@@ -49,6 +49,7 @@ jobs:
           envs: GITHUB_SHA
           script: |
             sudo docker rm -f $(docker ps -qa)
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/gaseng
+            docker rmi ${{ secrets.DOCKER_USERNAME }}/도커 레파지토리 이름
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/gaseng
             docker-compose up -d
             docker image prune -f
