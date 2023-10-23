@@ -25,12 +25,16 @@ public class File extends BaseTimeEntity {
     private String fileName;
 
     private String filePath;
-
+    
+    @Builder
+    public File(String filePath, Member member) {
+    	this.member = member;
+        this.filePath = filePath;
+    }
 
     @Builder
-    public void FileRequest(String fileName, String filePath, Member member) {
+    public void FileRequest(String filePath, Member member) {
         this.member = member;
-        this.fileName = fileName;
         this.filePath = filePath;
     }
 
