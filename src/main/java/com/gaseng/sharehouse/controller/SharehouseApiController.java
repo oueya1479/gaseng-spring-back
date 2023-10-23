@@ -34,6 +34,12 @@ public class SharehouseApiController {
     ) {
     	return new BaseResponse<>(sharehouseService.get(shrId));
     }
+    
+    @Operation(summary = "쉐어하우스 글 조회", description = "사용자가 쉐어하우스 글을 조회합니다.")
+    @GetMapping(value = "/all")
+    public BaseResponse<List<SharehouseResponse>> getAll() {
+    	return new BaseResponse<>(sharehouseService.getAll());
+    }
 
     @Operation(summary = "쉐어하우스 글 생성", description = "사용자가 쉐어하우스 글을 작성합니다.")
     @PostMapping(value = "")

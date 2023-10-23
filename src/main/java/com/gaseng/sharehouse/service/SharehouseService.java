@@ -50,6 +50,30 @@ public class SharehouseService {
 		);
 	}
     
+    public List<SharehouseResponse> getAll() {
+    	List<SharehouseResponse> responses = new ArrayList<>();
+    	List<Sharehouse> sharehouses = sharehouseRepository.findAll();
+    	
+    	for (Sharehouse sharehouse : sharehouses) {
+    		List<String> paths = new ArrayList<>();
+        	for (ShareFile shareFile : sharehouse.getShareFiles()) {
+        		paths.add(shareFile.getFile().getFilePath());
+        	}
+        	
+        	responses.add(new SharehouseResponse(
+        			sharehouse.getShrTitle(), 
+        			sharehouse.getShrDescription(), 
+        			sharehouse.getShrAddress(), 
+        			sharehouse.getShrAddressDetail(), 
+        			sharehouse.getShrPoster(), 
+    				paths
+        	));
+        	
+    	}
+    	
+		return responses;
+	}
+    
     public Long create(Long memId, MultipartFile poster, SharehouseRequest request) throws IOException {
         Optional<Member> member = memberRepository.findByMemId(memId);
         
