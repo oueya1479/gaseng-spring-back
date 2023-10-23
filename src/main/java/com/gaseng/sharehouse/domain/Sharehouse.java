@@ -1,12 +1,16 @@
 package com.gaseng.sharehouse.domain;
 
 import com.gaseng.file.domain.File;
+import com.gaseng.file.domain.ShareFile;
 import com.gaseng.global.common.BaseTimeEntity;
 import com.gaseng.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -32,25 +36,31 @@ public class Sharehouse extends BaseTimeEntity {
 
     private String shrAddressDetail;
 
-    private String shrLatitude;
-
-    private String shrLongitude;
-
     private String shrPoster;
 
     private SharehouseStatus shrStatus;
+    
+    @OneToMany(mappedBy = "sharehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ShareFile> shareFiles = new ArrayList<>();
 
     @Builder
-    public Sharehouse(Member member,String shrTitle,String shrDescription,String shrAddress,String shrAddressDetail,String shrLatitude,String shrLongitude,String shrPoster,SharehouseStatus shrStatus) {
+    public Sharehouse(Member member,String shrTitle,String shrDescription,String shrAddress,String shrAddressDetail,String shrPoster,SharehouseStatus shrStatus) {
         this.member = member;
         this.shrTitle = shrTitle;
         this.shrDescription = shrDescription;
         this.shrAddress=shrAddress;
         this.shrAddressDetail= shrAddressDetail;
-        this.shrLatitude= shrLatitude;
-        this.shrLongitude= shrLongitude;
         this.shrPoster=shrPoster;
         this.shrStatus=shrStatus;
+    }
+    
+    public void updatePoster(String poster) {
+    	this.shrPoster = poster;
+    }
+    
+    public void updateTitleandDescription(String title, String description) {
+    	this.shrTitle = title;
+    	this.shrDescription = description;
     }
 
     public void update(Sharehouse updateSharehouse) {
@@ -58,8 +68,6 @@ public class Sharehouse extends BaseTimeEntity {
         this.shrDescription = updateSharehouse.shrDescription;
         this.shrAddress=updateSharehouse.shrAddress;
         this.shrAddressDetail= updateSharehouse.shrAddressDetail;
-        this.shrLatitude= updateSharehouse.shrLatitude;
-        this.shrLongitude= updateSharehouse.shrLongitude;
         this.shrPoster=updateSharehouse.shrPoster;
         this.shrStatus=updateSharehouse.shrStatus;
     }
