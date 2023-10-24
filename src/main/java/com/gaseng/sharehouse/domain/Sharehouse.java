@@ -44,7 +44,15 @@ public class Sharehouse extends BaseTimeEntity {
     private List<ShareFile> shareFiles = new ArrayList<>();
 
     @Builder
-    public Sharehouse(Member member,String shrTitle,String shrDescription,String shrAddress,String shrAddressDetail,String shrPoster,SharehouseStatus shrStatus) {
+    public Sharehouse(
+            Member member,
+            String shrTitle,
+            String shrDescription,
+            String shrAddress,
+            String shrAddressDetail,
+            String shrPoster,
+            SharehouseStatus shrStatus
+    ) {
         this.member = member;
         this.shrTitle = shrTitle;
         this.shrDescription = shrDescription;
@@ -58,19 +66,18 @@ public class Sharehouse extends BaseTimeEntity {
     	this.shrPoster = poster;
     }
     
-    public void updateTitleandDescription(String title, String description) {
-    	this.shrTitle = title;
-    	this.shrDescription = description;
+    public void update(
+            String shrTitle,
+            String shrDescription,
+            String shrAddress,
+            String shrAddressDetail
+    ){
+        this.shrTitle = shrTitle;
+    	this.shrDescription = shrDescription;
+        this.shrAddress=shrAddress;
+        this.shrAddressDetail=shrAddressDetail;
     }
 
-    public void update(Sharehouse updateSharehouse) {
-        this.shrTitle = updateSharehouse.shrTitle;
-        this.shrDescription = updateSharehouse.shrDescription;
-        this.shrAddress=updateSharehouse.shrAddress;
-        this.shrAddressDetail= updateSharehouse.shrAddressDetail;
-        this.shrPoster=updateSharehouse.shrPoster;
-        this.shrStatus=updateSharehouse.shrStatus;
-    }
 
     /*public void addFile(File file) {
         this.file.add(file);

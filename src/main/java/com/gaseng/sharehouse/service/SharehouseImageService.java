@@ -32,7 +32,6 @@ public class SharehouseImageService {
     			.build();
     	
     	sharehouse.updatePoster(path);
-    	fileService.saveFile(file);
     }
 
 	public void uploadS3Images(List<MultipartFile> files, Sharehouse sharehouse) throws IOException {
@@ -45,5 +44,8 @@ public class SharehouseImageService {
         	fileService.saveFile(file, sharehouse);
     	}
     }
-    
+
+	public void deleteS3Images(String file){
+			s3Uploader.deleteS3(file);
+	}
 }
