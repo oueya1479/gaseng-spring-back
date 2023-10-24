@@ -14,7 +14,7 @@ spring:
         show_sql: false
         format_sql: true
         default_batch_fetch_size: 50
-
+  
   config:
     import:
       - classpath:secret.yml
@@ -44,3 +44,13 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: error
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 20MB

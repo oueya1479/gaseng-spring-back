@@ -1,12 +1,19 @@
 package com.gaseng.sharehouse.domain;
 
+import com.gaseng.file.domain.File;
+import com.gaseng.file.domain.ShareFile;
 import com.gaseng.global.common.BaseTimeEntity;
 import com.gaseng.member.domain.Member;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
+
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,11 +36,48 @@ public class Sharehouse extends BaseTimeEntity {
 
     private String shrAddressDetail;
 
-    private String shrLatitude;
-
-    private String shrLongitude;
-
     private String shrPoster;
 
     private SharehouseStatus shrStatus;
+    
+    @OneToMany(mappedBy = "sharehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ShareFile> shareFiles = new ArrayList<>();
+
+    @Builder
+    public Sharehouse(Member member,String shrTitle,String shrDescription,String shrAddress,String shrAddressDetail,String shrPoster,SharehouseStatus shrStatus) {
+        this.member = member;
+        this.shrTitle = shrTitle;
+        this.shrDescription = shrDescription;
+        this.shrAddress=shrAddress;
+        this.shrAddressDetail= shrAddressDetail;
+        this.shrPoster=shrPoster;
+        this.shrStatus=shrStatus;
+    }
+    
+    public void updatePoster(String poster) {
+    	this.shrPoster = poster;
+    }
+    
+    public void updateTitleandDescription(String title, String description) {
+    	this.shrTitle = title;
+    	this.shrDescription = description;
+    }
+
+    public void update(Sharehouse updateSharehouse) {
+        this.shrTitle = updateSharehouse.shrTitle;
+        this.shrDescription = updateSharehouse.shrDescription;
+        this.shrAddress=updateSharehouse.shrAddress;
+        this.shrAddressDetail= updateSharehouse.shrAddressDetail;
+        this.shrPoster=updateSharehouse.shrPoster;
+        this.shrStatus=updateSharehouse.shrStatus;
+    }
+
+    /*public void addFile(File file) {
+        this.file.add(file);
+
+        // 게시글에 파일이 저장되어있지 않은 경우
+        if(file.getBoard() != this)
+            // 파일 저장
+            file.setBoard(this);
+    }*/
 }

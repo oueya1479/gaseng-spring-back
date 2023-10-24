@@ -3,6 +3,7 @@ package com.gaseng.file.domain;
 import com.gaseng.global.common.BaseTimeEntity;
 import com.gaseng.member.domain.Member;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +25,17 @@ public class File extends BaseTimeEntity {
     private String fileName;
 
     private String filePath;
+    
+    @Builder
+    public File(String filePath, Member member) {
+    	this.member = member;
+        this.filePath = filePath;
+    }
+
+    @Builder
+    public void FileRequest(String filePath, Member member) {
+        this.member = member;
+        this.filePath = filePath;
+    }
+
 }
