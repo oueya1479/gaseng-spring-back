@@ -14,6 +14,7 @@ import com.gaseng.sharehouse.domain.Sharehouse;
 import com.gaseng.sharehouse.repository.SharehouseRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.util.UriUtils;
 
 @Service
 @Transactional
@@ -41,6 +42,7 @@ public class SharehouseImageService {
         			.member(sharehouse.getMember())
         			.filePath(path)
         			.build();
+			System.out.println(path);
         	fileService.saveFile(file, sharehouse);
     	}
     }

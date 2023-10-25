@@ -19,10 +19,6 @@ spring:
     import:
       - classpath:secret.yml
 
-  config:
-    import:
-      - classpath:secret.yml
-
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher

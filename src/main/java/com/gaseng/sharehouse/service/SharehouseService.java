@@ -31,6 +31,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class SharehouseService {
     private final SharehouseRepository sharehouseRepository;
+	private final ShareFileRepository shareFileRepository;
     private final MemberRepository memberRepository;
     private final SharehouseImageService sharehouseImageService;
 	private final FileRepository fileRepository;
@@ -80,7 +81,6 @@ public class SharehouseService {
     
     public Long create(Long memId, MultipartFile poster, SharehouseRequest request) throws IOException {
         Optional<Member> member = memberRepository.findByMemId(memId);
-        
         Sharehouse sharehouse = Sharehouse.builder()
         		.member(member.get())
                 .shrTitle(request.shrTitle())
@@ -124,11 +124,13 @@ public class SharehouseService {
 	public void deleteSharehouse(Long memId, Long shrId){
 		Optional<Sharehouse> sharehouse = sharehouseRepository.findById(shrId);
 		isAuthor(memId,sharehouse.get().getMember().getMemId());
-		List<File> files = fileRepository.findByMember(memberRepository.findByMemId(memId).get());
-		for (File file : files) {
-			sharehouseImageService.deleteS3Images("sharehouse/"+file.getFilePath().toString().split("/")[4]);
+		List<ShareFile> shareFiles = shareFileRepository.findBySharehouse(sharehouse.get());
+		String Posterfile = sharehouse.get().getShrPoster().toString();
+		sharehouseImageService.deleteS3Images("sharehouse/"+Posterfile.split("/")[4]);
+		for (ShareFile shareFile : shareFiles) {
+			File file = fileRepository.findById(shareFile.getFile().getFileId()).get();
+			sharehouseImageService.deleteS3Images("sharehouse/"+file.getFilePath().split("/")[4]);
 		}
-
 		sharehouseRepository.delete(sharehouse.get());
 	}
     

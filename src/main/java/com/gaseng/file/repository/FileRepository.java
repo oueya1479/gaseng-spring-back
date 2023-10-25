@@ -12,6 +12,5 @@ import java.util.Optional;
 
 @Repository
 public interface FileRepository extends JpaRepository<File,Long> {
-    List<File> findByMember(Member member);
-    void deleteByMember(Member member);
+
 }
