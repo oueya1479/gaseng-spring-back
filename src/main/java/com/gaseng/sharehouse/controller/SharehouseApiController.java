@@ -43,7 +43,7 @@ public class SharehouseApiController {
     }
 
     @Operation(summary = "쉐어하우스 글 생성", description = "사용자가 쉐어하우스 글을 작성합니다.")
-    @PostMapping(value = "/create")
+    @PostMapping(value = "")
     public BaseResponse<Long> create(
     		@ExtractPayload Long memId,
     		@RequestParam(value = "poster") MultipartFile poster, 
@@ -51,27 +51,28 @@ public class SharehouseApiController {
     ) throws IOException {
     	return new BaseResponse<>(sharehouseService.create(memId, poster, request));
     }
-    @Operation(summary = "쉐어하우스 글 수정 입력", description = "사용자가 쉐어하우스 글을 수정입력합니다.")
-    @GetMapping(value = "/update/{id}")
-    public BaseResponse<SharehouseResponse> getSharehouse(@PathVariable Long id) {
-        return new BaseResponse<>(sharehouseService.get(id));
-    }
-
+    
+//    @Operation(summary = "쉐어하우스 글 수정 입력", description = "사용자가 쉐어하우스 글을 수정입력합니다.")
+//    @GetMapping(value = "/{id}")
+//    public BaseResponse<SharehouseResponse> getSharehouse(@PathVariable Long id) {
+//        return new BaseResponse<>(sharehouseService.get(id));
+//    }
 
     @Operation(summary = "쉐어하우스 글 수정", description = "사용자가 쉐어하우스 글을 수정합니다.")
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "")
     public BaseResponse<Long> update(
     		@ExtractPayload Long memId,
     		@Valid SharehouseUpdateRequest request
     ) {
     	return new BaseResponse<>(sharehouseService.update(memId,request));
     }
+    
     @Operation(summary = "쉐어하우스 글 삭제", description = "사용자가 쉐어하우스 글을 삭제합니다.")
-    @PostMapping(value = "/delete/{id}")
-    public void delete(
+    @DeleteMapping(value = "")
+    public BaseResponse<Long> delete(
             @ExtractPayload Long memId,
             @Valid SharehouseDeleteRequest request
     ) {
-        sharehouseService.deleteSharehouse(memId, request.id());
+        return new BaseResponse<>(sharehouseService.deleteSharehouse(memId, request.id()));
     }
 }

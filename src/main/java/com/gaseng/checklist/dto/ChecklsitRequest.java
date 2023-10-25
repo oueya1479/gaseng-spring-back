@@ -8,7 +8,7 @@ import com.gaseng.member.domain.Member;
 import java.util.Date;
 
 public record ChecklsitRequest(
-        Member member,
+        Long id,
         CheckSleepingHabit chkSleepingHabit,
         CheckCigarette chkCigarette,
         Date chkSleepTime,
