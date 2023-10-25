@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SharehouseRepository extends JpaRepository<Sharehouse,Long> {
-    Sharehouse findByMember(Member member);
     Optional<Sharehouse> findByShrId(Long shrId);
+
 }

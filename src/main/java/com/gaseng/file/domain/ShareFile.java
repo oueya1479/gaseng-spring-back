@@ -17,7 +17,7 @@ public class ShareFile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long shrFileId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
     @JoinColumn(name = "file_id", nullable = false)
     private File file;
 

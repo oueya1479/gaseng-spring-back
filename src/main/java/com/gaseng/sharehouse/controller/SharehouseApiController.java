@@ -1,9 +1,10 @@
 package com.gaseng.sharehouse.controller;
 
-import com.gaseng.file.repository.FileRepository;
 import com.gaseng.file.service.FileService;
 import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
+
+import com.gaseng.sharehouse.dto.SharehouseDeleteRequest;
 import com.gaseng.sharehouse.dto.SharehouseRequest;
 import com.gaseng.sharehouse.dto.SharehouseResponse;
 import com.gaseng.sharehouse.dto.SharehouseUpdateRequest;
@@ -42,7 +43,7 @@ public class SharehouseApiController {
     }
 
     @Operation(summary = "쉐어하우스 글 생성", description = "사용자가 쉐어하우스 글을 작성합니다.")
-    @PostMapping(value = "")
+    @PostMapping(value = "/create")
     public BaseResponse<Long> create(
     		@ExtractPayload Long memId,
     		@RequestParam(value = "poster") MultipartFile poster, 
@@ -50,18 +51,27 @@ public class SharehouseApiController {
     ) throws IOException {
     	return new BaseResponse<>(sharehouseService.create(memId, poster, request));
     }
-    
+    @Operation(summary = "쉐어하우스 글 수정 입력", description = "사용자가 쉐어하우스 글을 수정입력합니다.")
+    @GetMapping(value = "/update/{id}")
+    public BaseResponse<SharehouseResponse> getSharehouse(@PathVariable Long id) {
+        return new BaseResponse<>(sharehouseService.get(id));
+    }
+
+
     @Operation(summary = "쉐어하우스 글 수정", description = "사용자가 쉐어하우스 글을 수정합니다.")
-    @PutMapping(value = "")
+    @PutMapping(value = "/update/{id}")
     public BaseResponse<Long> update(
     		@ExtractPayload Long memId,
     		@Valid SharehouseUpdateRequest request
     ) {
-    	return new BaseResponse<>(sharehouseService.update(memId, request));
+    	return new BaseResponse<>(sharehouseService.update(memId,request));
     }
-
-    @PostMapping(value = "/checklist/update")
-    public void updateChecklist(@ExtractPayload Long memId, @RequestBody @Valid SharehouseRequest request) {
-        sharehouseService.updateChecklist(memId, request.toSharehouse());
+    @Operation(summary = "쉐어하우스 글 삭제", description = "사용자가 쉐어하우스 글을 삭제합니다.")
+    @PostMapping(value = "/delete/{id}")
+    public void delete(
+            @ExtractPayload Long memId,
+            @Valid SharehouseDeleteRequest request
+    ) {
+        sharehouseService.deleteSharehouse(memId, request.id());
     }
 }

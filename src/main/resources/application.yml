@@ -44,13 +44,8 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: error
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql: trace
-
   servlet:
     multipart:
       maxFileSize: 10MB
       maxRequestSize: 20MB
+
