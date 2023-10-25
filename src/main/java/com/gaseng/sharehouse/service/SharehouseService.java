@@ -1,6 +1,9 @@
 package com.gaseng.sharehouse.service;
 
+import com.gaseng.file.domain.File;
 import com.gaseng.file.domain.ShareFile;
+import com.gaseng.file.repository.FileRepository;
+import com.gaseng.file.repository.ShareFileRepository;
 import com.gaseng.global.exception.BaseException;
 import com.gaseng.member.domain.Member;
 import com.gaseng.member.repository.MemberRepository;
@@ -28,9 +31,11 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class SharehouseService {
     private final SharehouseRepository sharehouseRepository;
+	private final ShareFileRepository shareFileRepository;
     private final MemberRepository memberRepository;
     private final SharehouseImageService sharehouseImageService;
-    
+	private final FileRepository fileRepository;
+
     public SharehouseResponse get(Long shrId) {
     	Optional<Sharehouse> sharehouse = sharehouseRepository.findByShrId(shrId);
     	Sharehouse sharehouseEntity = sharehouse.get();
@@ -76,7 +81,6 @@ public class SharehouseService {
     
     public Long create(Long memId, MultipartFile poster, SharehouseRequest request) throws IOException {
         Optional<Member> member = memberRepository.findByMemId(memId);
-        
         Sharehouse sharehouse = Sharehouse.builder()
         		.member(member.get())
                 .shrTitle(request.shrTitle())
@@ -93,14 +97,12 @@ public class SharehouseService {
         return sharehouse.getShrId();
     }
     
-    public Long update(Long memId, SharehouseUpdateRequest request) {
+    public Long update(Long memId,SharehouseUpdateRequest request) {
     	Optional<Sharehouse> sharehouse = sharehouseRepository.findByShrId(request.id());
     	Sharehouse sharehouseEntity = sharehouse.get();
-    	
     	this.isAuthor(memId, sharehouseEntity.getMember().getMemId());
-    	
-    	sharehouseEntity.updateTitleandDescription(request.title(), request.description());
-    	
+    	sharehouseEntity.update(request.shrTitle(), request.shrDescription(),request.shrAddress(), request.shrAddressDetail());
+    	sharehouseRepository.save(sharehouseEntity);
 		return sharehouseEntity.getShrId();
 	}
     
@@ -110,13 +112,6 @@ public class SharehouseService {
     	}
     }
 
-    public void updateChecklist(Long memId,Sharehouse updateSharehouse) {
-        Optional<Member> member = memberRepository.findByMemId(memId);
-        Sharehouse sharehouse = sharehouseRepository.findByMember(member.get());
-        sharehouse.update(updateSharehouse);
-        sharehouseRepository.save(sharehouse);
-    }
-    
     private void processImage(
     		MultipartFile poster, 
     		List<MultipartFile> files,
@@ -125,5 +120,18 @@ public class SharehouseService {
     	sharehouseImageService.uploadS3Poster(poster, sharehouse);
     	sharehouseImageService.uploadS3Images(files, sharehouse);
     }
+
+	public void deleteSharehouse(Long memId, Long shrId){
+		Optional<Sharehouse> sharehouse = sharehouseRepository.findById(shrId);
+		isAuthor(memId,sharehouse.get().getMember().getMemId());
+		List<ShareFile> shareFiles = shareFileRepository.findBySharehouse(sharehouse.get());
+		String Posterfile = sharehouse.get().getShrPoster().toString();
+		sharehouseImageService.deleteS3Images("sharehouse/"+Posterfile.split("/")[4]);
+		for (ShareFile shareFile : shareFiles) {
+			File file = fileRepository.findById(shareFile.getFile().getFileId()).get();
+			sharehouseImageService.deleteS3Images("sharehouse/"+file.getFilePath().split("/")[4]);
+		}
+		sharehouseRepository.delete(sharehouse.get());
+	}
     
 }
