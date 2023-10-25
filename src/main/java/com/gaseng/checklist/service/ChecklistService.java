@@ -57,7 +57,7 @@ public class ChecklistService {
 			    checklist.getChkCigarette(),
 			    checklist.getChkSleepTime(),
 			    checklist.getChkMbti(),
-			    checklist.getChkMbti(),
+			    checklist.getChkCallPlace(),
 			    checklist.getChkType()
 		);
 	}

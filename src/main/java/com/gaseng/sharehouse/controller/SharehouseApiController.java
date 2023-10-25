@@ -62,7 +62,7 @@ public class SharehouseApiController {
     @PutMapping(value = "")
     public BaseResponse<Long> update(
     		@ExtractPayload Long memId,
-    		@Valid SharehouseUpdateRequest request
+    		@RequestBody @Valid SharehouseUpdateRequest request
     ) {
     	return new BaseResponse<>(sharehouseService.update(memId,request));
     }
@@ -71,7 +71,7 @@ public class SharehouseApiController {
     @DeleteMapping(value = "")
     public BaseResponse<Long> delete(
             @ExtractPayload Long memId,
-            @Valid SharehouseDeleteRequest request
+            @RequestBody @Valid SharehouseDeleteRequest request
     ) {
         return new BaseResponse<>(sharehouseService.deleteSharehouse(memId, request.id()));
     }
