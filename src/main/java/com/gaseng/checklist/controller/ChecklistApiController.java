@@ -20,18 +20,19 @@ public class ChecklistApiController {
     private final ChecklistService checklistService;
 
     @PreAuthorize("hasRole('USER')")
-    @PostMapping(value = "/create")
-    public BaseResponse<Long> create(@ExtractPayload Long memId, @RequestBody @Valid ChecklsitRequest request){
-        return new BaseResponse<>(checklistService.join(memId,request.toChecklist()));
+    @PostMapping(value = "")
+    public BaseResponse<Long> create(@RequestParam Long memId, @RequestBody @Valid ChecklsitRequest request){
+        return new BaseResponse<>(checklistService.join(memId, request.toChecklist()));
     }
 
     @PreAuthorize("hasRole('USER')")
-    @GetMapping(value = "/update/{id}")
-    public BaseResponse<Long> update(@ExtractPayload Long memId, @RequestBody @Valid ChecklsitRequest request) {
-        return new BaseResponse<>(checklistService.join(memId,request.toChecklist()));
+    @GetMapping(value = "")
+    public BaseResponse<ChecklistResponse> get(@ExtractPayload Long memId) {
+        return new BaseResponse<>(checklistService.get(memId));
     }
+    
     @PreAuthorize("hasRole('USER')")
-    @PostMapping(value = "/update/{id}")
+    @PutMapping(value = "")
     public BaseResponse<Long> updateChecklist(@ExtractPayload Long memId, @RequestBody @Valid ChecklsitRequest request) {
         return new BaseResponse<>(checklistService.updateChecklist(memId, request.toChecklist()));
     }

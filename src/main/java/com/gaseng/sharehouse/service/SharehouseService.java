@@ -46,6 +46,7 @@ public class SharehouseService {
     	}
     	
 		return new SharehouseResponse(
+				shrId,
 				sharehouseEntity.getShrTitle(), 
 				sharehouseEntity.getShrDescription(), 
 				sharehouseEntity.getShrAddress(), 
@@ -66,6 +67,7 @@ public class SharehouseService {
         	}
         	
         	responses.add(new SharehouseResponse(
+        			sharehouse.getShrId(),
         			sharehouse.getShrTitle(), 
         			sharehouse.getShrDescription(), 
         			sharehouse.getShrAddress(), 
@@ -121,7 +123,7 @@ public class SharehouseService {
     	sharehouseImageService.uploadS3Images(files, sharehouse);
     }
 
-	public void deleteSharehouse(Long memId, Long shrId){
+	public Long deleteSharehouse(Long memId, Long shrId){
 		Optional<Sharehouse> sharehouse = sharehouseRepository.findById(shrId);
 		isAuthor(memId,sharehouse.get().getMember().getMemId());
 		List<ShareFile> shareFiles = shareFileRepository.findBySharehouse(sharehouse.get());
@@ -132,6 +134,7 @@ public class SharehouseService {
 			sharehouseImageService.deleteS3Images("sharehouse/"+file.getFilePath().split("/")[4]);
 		}
 		sharehouseRepository.delete(sharehouse.get());
+		return shrId;
 	}
     
 }

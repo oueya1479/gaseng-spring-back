@@ -22,6 +22,11 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
+  
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 20MB
 
 jwt:
   secret: ${JWT_SECRET}
@@ -44,8 +49,9 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: error
-  servlet:
-    multipart:
-      maxFileSize: 10MB
-      maxRequestSize: 20MB
 
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
