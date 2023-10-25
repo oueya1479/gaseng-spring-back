@@ -1,15 +1,15 @@
 package com.gaseng.checklist.controller;
 
+import com.gaseng.checklist.dto.ChecklistResponse;
 import com.gaseng.checklist.dto.ChecklsitRequest;
 import com.gaseng.checklist.service.ChecklistService;
 import com.gaseng.global.annotation.ExtractPayload;
+import com.gaseng.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 
 @ResponseBody
@@ -21,15 +21,19 @@ public class ChecklistApiController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "/create")
-    public void create(@ExtractPayload Long memId, @RequestBody @Valid ChecklsitRequest request){
-        checklistService.join(memId,request.toChecklist());
+    public BaseResponse<Long> create(@ExtractPayload Long memId, @RequestBody @Valid ChecklsitRequest request){
+        return new BaseResponse<>(checklistService.join(memId,request.toChecklist()));
     }
 
-
     @PreAuthorize("hasRole('USER')")
-    @PostMapping(value = "/update")
-    public void updateChecklist(@ExtractPayload Long memId, @RequestBody @Valid ChecklsitRequest request) {
-        checklistService.updateChecklist(memId, request.toChecklist());
+    @GetMapping(value = "/update/{id}")
+    public BaseResponse<Long> update(@ExtractPayload Long memId, @RequestBody @Valid ChecklsitRequest request) {
+        return new BaseResponse<>(checklistService.join(memId,request.toChecklist()));
+    }
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping(value = "/update/{id}")
+    public BaseResponse<Long> updateChecklist(@ExtractPayload Long memId, @RequestBody @Valid ChecklsitRequest request) {
+        return new BaseResponse<>(checklistService.updateChecklist(memId, request.toChecklist()));
     }
 
 }

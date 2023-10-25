@@ -34,10 +34,11 @@ public class ChecklistService {
         return checklist.getChkId();
     }
 
-    public void updateChecklist(Long memId,Checklist updateChecklist) {
+    public Long updateChecklist(Long memId,Checklist updateChecklist) {
         Optional<Member> member = memberRepository.findByMemId(memId);
         Checklist checklist = checklistRepository.findByMember(member.get());
         checklist.update(updateChecklist);
         checklistRepository.save(checklist);
+        return checklist.getChkId();
     }
 }

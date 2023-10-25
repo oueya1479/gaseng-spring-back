@@ -2,9 +2,8 @@ package com.gaseng.sharehouse.dto;
 
 import java.util.List;
 
-import com.gaseng.member.domain.Member;
-
 public record SharehouseResponse (
+		Long id,
 		String title,
 		String description,
 		String address,
