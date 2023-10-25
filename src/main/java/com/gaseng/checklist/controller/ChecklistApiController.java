@@ -21,8 +21,8 @@ public class ChecklistApiController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "")
-    public BaseResponse<Long> create(@RequestBody @Valid ChecklsitRequest request){
-        return new BaseResponse<>(checklistService.join(request.id(), request.toChecklist()));
+    public BaseResponse<Long> create(@RequestParam Long memId, @RequestBody @Valid ChecklsitRequest request){
+        return new BaseResponse<>(checklistService.join(memId, request.toChecklist()));
     }
 
     @PreAuthorize("hasRole('USER')")
