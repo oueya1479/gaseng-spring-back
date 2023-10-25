@@ -6,6 +6,7 @@ import com.gaseng.jwt.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -14,6 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
     private final JwtTokenProvider jwtTokenProvider;
+    
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+      registry.addMapping("/**")
+          .allowedOrigins("https://gaseng.web.app");
+    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
