@@ -1,6 +1,5 @@
 package com.gaseng.sharehouse.controller;
 
-import com.gaseng.file.service.FileService;
 import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
 import com.gaseng.sharehouse.dto.SharehouseDeleteRequest;
@@ -24,7 +23,6 @@ import java.util.List;
 @RequestMapping("/sharehouse")
 public class SharehouseApiController {
     private final SharehouseService sharehouseService;
-    private final FileService fileService;
     
     @Operation(summary = "쉐어하우스 글 조회", description = "사용자가 쉐어하우스 글을 조회합니다.")
     @GetMapping(value = "")
@@ -49,12 +47,6 @@ public class SharehouseApiController {
     ) throws IOException {
     	return new BaseResponse<>(sharehouseService.create(memId, poster, request));
     }
-    
-//    @Operation(summary = "쉐어하우스 글 수정 입력", description = "사용자가 쉐어하우스 글을 수정입력합니다.")
-//    @GetMapping(value = "/{id}")
-//    public BaseResponse<SharehouseResponse> getSharehouse(@PathVariable Long id) {
-//        return new BaseResponse<>(sharehouseService.get(id));
-//    }
 
     @Operation(summary = "쉐어하우스 글 수정", description = "사용자가 쉐어하우스 글을 수정합니다.")
     @PutMapping(value = "")
