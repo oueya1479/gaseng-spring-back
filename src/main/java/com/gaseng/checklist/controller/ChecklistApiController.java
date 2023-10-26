@@ -1,7 +1,7 @@
 package com.gaseng.checklist.controller;
 
 import com.gaseng.checklist.dto.ChecklistResponse;
-import com.gaseng.checklist.dto.ChecklsitRequest;
+import com.gaseng.checklist.dto.ChecklistRequest;
 import com.gaseng.checklist.service.ChecklistService;
 import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
@@ -21,7 +21,7 @@ public class ChecklistApiController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "")
-    public BaseResponse<Long> create(@RequestParam Long memId, @RequestBody @Valid ChecklsitRequest request){
+    public BaseResponse<Long> create(@RequestParam Long memId, @RequestBody @Valid ChecklistRequest request){
         return new BaseResponse<>(checklistService.create(memId, request.toChecklist()));
     }
 
@@ -33,7 +33,7 @@ public class ChecklistApiController {
     
     @PreAuthorize("hasRole('USER')")
     @PutMapping(value = "")
-    public BaseResponse<Long> updateChecklist(@ExtractPayload Long memId, @RequestBody @Valid ChecklsitRequest request) {
+    public BaseResponse<Long> updateChecklist(@ExtractPayload Long memId, @RequestBody @Valid ChecklistRequest request) {
         return new BaseResponse<>(checklistService.updateChecklist(memId, request.toChecklist()));
     }
 }
