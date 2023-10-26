@@ -34,6 +34,7 @@ public class SecurityConfig {
             /* member auth service */
             "/member/sign-up",
             "/member/login",
+            "/checklist",
 
             /* swagger */
             "/v3/api-docs/**",
