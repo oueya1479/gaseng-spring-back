@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ShareFileRepository extends JpaRepository<ShareFile,Long> {
+public interface ShareFileRepository extends JpaRepository<ShareFile, Long> {
     List<ShareFile> findBySharehouse(Sharehouse sharehouse);
 }

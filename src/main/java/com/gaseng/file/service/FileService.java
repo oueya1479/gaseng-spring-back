@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class FileService {
     private final FileRepository fileRepository;
     private final ShareFileRepository shareFileRepository;
-    private final MemberRepository memberRepository;
     
     @Transactional
     public File saveFile(File file) {
@@ -29,7 +28,7 @@ public class FileService {
                 .file(savedFile)
                 .sharehouse(sharehouse)
                 .build();
+
         return shareFileRepository.save(shareFile);
     }
-
 }
