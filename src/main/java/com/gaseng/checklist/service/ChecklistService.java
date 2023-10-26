@@ -5,6 +5,8 @@ import com.gaseng.checklist.dto.ChecklistResponse;
 import com.gaseng.checklist.repository.ChecklistRepository;
 import com.gaseng.member.domain.Member;
 import com.gaseng.member.repository.MemberRepository;
+import com.gaseng.member.service.MemberInfoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,19 +14,17 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ChecklistService {
     private final ChecklistRepository checklistRepository;
     private final MemberRepository memberRepository;
+    private final MemberInfoService memberInfoService;
 
-    public ChecklistService(ChecklistRepository checklistRepository, MemberRepository memberRepository) {
-        this.checklistRepository = checklistRepository;
-        this.memberRepository = memberRepository;
-    }
+    public Long create(Long memId, Checklist checklist) {
+        Member member = memberInfoService.findByMemId(memId);
 
-    public Long join(Long memId,Checklist checklist) {
-        Optional<Member> member = memberRepository.findByMemId(memId);
         checklist = Checklist.builder()
-                .member(member.get())
+                .member(member)
                 .chkSleepingHabit(checklist.getChkSleepingHabit())
                 .chkCigarette(checklist.getChkCigarette())
                 .chkSleepTime(checklist.getChkSleepTime())
@@ -33,6 +33,7 @@ public class ChecklistService {
                 .chkType(checklist.getChkType())
                 .build();
         checklistRepository.save(checklist);
+
         return checklist.getChkId();
     }
 

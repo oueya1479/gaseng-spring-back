@@ -22,7 +22,7 @@ public class ChecklistApiController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "")
     public BaseResponse<Long> create(@RequestParam Long memId, @RequestBody @Valid ChecklsitRequest request){
-        return new BaseResponse<>(checklistService.join(memId, request.toChecklist()));
+        return new BaseResponse<>(checklistService.create(memId, request.toChecklist()));
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -36,5 +36,4 @@ public class ChecklistApiController {
     public BaseResponse<Long> updateChecklist(@ExtractPayload Long memId, @RequestBody @Valid ChecklsitRequest request) {
         return new BaseResponse<>(checklistService.updateChecklist(memId, request.toChecklist()));
     }
-
 }
