@@ -26,14 +26,14 @@ public class ChecklistApiController {
     }
 
     @PreAuthorize("hasRole('USER')")
+    @PutMapping(value = "")
+    public BaseResponse<Long> update(@ExtractPayload Long memId, @RequestBody @Valid ChecklistRequest request) {
+        return new BaseResponse<>(checklistService.update(memId, request.toChecklist()));
+    }
+
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(value = "")
     public BaseResponse<ChecklistResponse> get(@ExtractPayload Long memId) {
         return new BaseResponse<>(checklistService.get(memId));
-    }
-    
-    @PreAuthorize("hasRole('USER')")
-    @PutMapping(value = "")
-    public BaseResponse<Long> updateChecklist(@ExtractPayload Long memId, @RequestBody @Valid ChecklistRequest request) {
-        return new BaseResponse<>(checklistService.updateChecklist(memId, request.toChecklist()));
     }
 }

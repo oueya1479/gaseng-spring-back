@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChecklistRepository extends JpaRepository<Checklist,Long> {
-  Checklist findByMember(Member member);
+    Checklist findByMember(Member member);
 }
