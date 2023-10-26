@@ -31,11 +31,4 @@ public class File extends BaseTimeEntity {
     	this.member = member;
         this.filePath = filePath;
     }
-
-    @Builder
-    public void FileRequest(String filePath, Member member) {
-        this.member = member;
-        this.filePath = filePath;
-    }
-
 }
