@@ -1,8 +1,5 @@
 package com.gaseng.checklist.service;
 
-import com.gaseng.checklist.domain.CheckCigarette;
-import com.gaseng.checklist.domain.CheckSleepingHabit;
-import com.gaseng.checklist.domain.CheckType;
 import com.gaseng.checklist.domain.Checklist;
 import com.gaseng.checklist.dto.ChecklistResponse;
 import com.gaseng.checklist.repository.ChecklistRepository;
@@ -11,7 +8,6 @@ import com.gaseng.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Service

@@ -2,8 +2,6 @@ package com.gaseng.sharehouse.dto;
 
 import com.gaseng.sharehouse.domain.Sharehouse;
 
-import java.io.File;
-
 public record SharehouseDeleteRequest (
         Long id
 ) {

@@ -4,7 +4,7 @@ import com.gaseng.checklist.domain.CheckCigarette;
 import com.gaseng.checklist.domain.CheckSleepingHabit;
 import com.gaseng.checklist.domain.CheckType;
 import com.gaseng.checklist.domain.Checklist;
-import com.gaseng.member.domain.Member;
+
 import java.util.Date;
 
 public record ChecklsitRequest(

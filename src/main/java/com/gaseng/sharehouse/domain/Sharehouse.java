@@ -1,6 +1,5 @@
 package com.gaseng.sharehouse.domain;
 
-import com.gaseng.file.domain.File;
 import com.gaseng.file.domain.ShareFile;
 import com.gaseng.global.common.BaseTimeEntity;
 import com.gaseng.member.domain.Member;
@@ -9,10 +8,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.*;
 
 
 @Getter

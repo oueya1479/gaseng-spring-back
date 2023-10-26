@@ -1,20 +1,15 @@
 package com.gaseng.sharehouse.service;
 
-import java.io.IOException;
-import java.util.List;
-
+import com.gaseng.file.domain.File;
+import com.gaseng.file.service.FileService;
+import com.gaseng.sharehouse.domain.Sharehouse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.gaseng.file.domain.File;
-import com.gaseng.file.service.FileService;
-import com.gaseng.member.repository.MemberRepository;
-import com.gaseng.sharehouse.domain.Sharehouse;
-import com.gaseng.sharehouse.repository.SharehouseRepository;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.util.UriUtils;
+import java.io.IOException;
+import java.util.List;
 
 @Service
 @Transactional
