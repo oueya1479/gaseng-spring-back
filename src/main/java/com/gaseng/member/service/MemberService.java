@@ -1,5 +1,7 @@
 package com.gaseng.member.service;
 
+import com.gaseng.file.domain.File;
+import com.gaseng.file.domain.ShareFile;
 import com.gaseng.global.exception.BaseException;
 import com.gaseng.jwt.service.TokenService;
 import com.gaseng.jwt.util.JwtTokenProvider;
@@ -9,9 +11,15 @@ import com.gaseng.member.domain.Password;
 import com.gaseng.member.dto.LoginResponse;
 import com.gaseng.member.exception.MemberErrorCode;
 import com.gaseng.member.repository.MemberRepository;
+import com.gaseng.sharehouse.domain.Sharehouse;
+import com.gaseng.sharehouse.repository.SharehouseRepository;
+import com.gaseng.sharehouse.service.SharehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 import static com.gaseng.member.domain.Password.ENCODER;
 
@@ -21,6 +29,8 @@ import static com.gaseng.member.domain.Password.ENCODER;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberInfoService memberInfoService;
+    private final SharehouseService sharehouseService;
+    private final SharehouseRepository sharehouseRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final TokenService tokenService;
 
@@ -56,6 +66,18 @@ public class MemberService {
 
     @Transactional
     public Long logout(Long memId) {
+        tokenService.deleteRefreshTokenByMemId(memId);
+        return memId;
+    }
+
+    @Transactional
+    public Long signOut(Long memId) {
+        Member member = memberRepository.findByMemId(memId).get();
+        List<Sharehouse> shareHouses = sharehouseRepository.findByMember(member);
+        for (Sharehouse shareHouse : shareHouses) {
+            sharehouseService.deleteSharehouse(memId,shareHouse.getShrId());
+        }
+        memberRepository.delete(member);
         tokenService.deleteRefreshTokenByMemId(memId);
         return memId;
     }
