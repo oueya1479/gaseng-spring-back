@@ -9,10 +9,14 @@ import com.gaseng.member.domain.Password;
 import com.gaseng.member.dto.LoginResponse;
 import com.gaseng.member.exception.MemberErrorCode;
 import com.gaseng.member.repository.MemberRepository;
+import com.gaseng.certification.service.MessageService;
 import lombok.RequiredArgsConstructor;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.gaseng.certification.domain.Search.ID;
+import static com.gaseng.certification.domain.Search.PW;
 import static com.gaseng.member.domain.Password.ENCODER;
 
 @Service
@@ -21,6 +25,7 @@ import static com.gaseng.member.domain.Password.ENCODER;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberInfoService memberInfoService;
+    private final MessageService messageService;
     private final JwtTokenProvider jwtTokenProvider;
     private final TokenService tokenService;
 
@@ -59,7 +64,40 @@ public class MemberService {
         tokenService.deleteRefreshTokenByMemId(memId);
         return memId;
     }
+    @Transactional
+    public Long searchId(String memName, String memPhone) throws CoolsmsException {
+        if (memberRepository.existsByMemPhone(memPhone)) {
+            Member member = memberRepository.findByMemPhone(memPhone);
+            if(member.getMemName().equals(memName)){
+                messageService.sendMessage(member.getMemPhone(),member,ID);
+                return member.getMemId();
+            }
+        }
+        throw BaseException.type(MemberErrorCode.MEMBER_NOT_FOUND);
+    }
 
+    @Transactional
+    public Long changePw(String memName, String memPhone, String memEmail) throws CoolsmsException {
+        if (memberRepository.existsByMemPhone(memPhone)) {
+            Member member = memberRepository.findByMemPhone(memPhone);
+            if(member.getMemName().equals(memName)){
+                if(member.getMemEmail().getValue().equals(memEmail)) {
+                    messageService.sendMessage(member.getMemPhone(),member,PW);
+                    return member.getMemId();
+                }
+            }throw BaseException.type(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+        throw BaseException.type(MemberErrorCode.MEMBER_NOT_FOUND);
+    }
+
+    @Transactional
+    public Long pwUpdate(Long memId, String newPassword){
+        Member member = memberRepository.findByMemId(memId).get();
+        Password password = Password.encrypt(newPassword, ENCODER);
+        member.pwUpdate(password);
+        memberRepository.save(member);
+        return member.getMemId();
+    }
     private void validateDuplicateMember(Email memEmail, String memPhone, String memNickname) {
         validateDuplicateEmail(memEmail);
         validateDuplicatePhone(memPhone);
