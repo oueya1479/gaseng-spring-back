@@ -1,6 +1,8 @@
 package com.gaseng.certification.service;
 
 import com.gaseng.certification.domain.Search;
+import com.gaseng.certification.exception.CertificationErrorCode;
+import com.gaseng.global.exception.BaseException;
 import com.gaseng.member.domain.Member;
 import com.gaseng.certification.domain.Certification;
 import com.gaseng.certification.repository.CertificationRepository;
@@ -62,7 +64,7 @@ public class MessageService {
             }
             return certs.get(0).getMember().getMemId();
         }
-        return null;
+        throw BaseException.type(CertificationErrorCode.CERTIFICATION_MISMATCH);
     }
 
     @Transactional
@@ -74,7 +76,7 @@ public class MessageService {
             }
             return certs.get(0).getMember().getMemId();
         }
-        return null;
+        throw BaseException.type(CertificationErrorCode.CERTIFICATION_MISMATCH);
     }
 
     @Transactional
