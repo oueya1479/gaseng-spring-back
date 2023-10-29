@@ -87,7 +87,13 @@ public class MemberApiController {
 
     @Operation(summary = "비밀번호 변경", description = "사용자가 비밀번호 변경을 진행합니다.")
     @PostMapping("/pw-update")
-    public BaseResponse<Long> pwUpdate(@RequestBody @Valid PwUpdateRequest request){
-        return new BaseResponse<>(memberService.pwUpdate(request.id(),request.password()));
+    public BaseResponse<Long> pwUpdate(@RequestBody @Valid PwUpdateRequest request) {
+        return new BaseResponse<>(memberService.pwUpdate(request.id(), request.password()));
+    }
+    @Operation(summary = "회원탈퇴", description = "사용자가 회원탈퇴를 진행합니다.")
+    @PostMapping("/sign-out")
+    public BaseResponse<Long> signOut(@ExtractPayload Long memId){
+        return new BaseResponse<>(memberService.signOut(memId));
+
     }
 }

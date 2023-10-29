@@ -37,6 +37,8 @@ public class SecurityConfig {
             "/member/search-id/**",
             "/member/change-pw/**",
             "/member/pw-update/**",
+            "/checklist",
+
             /* swagger */
             "/v3/api-docs/**",
             "/swagger-resources/**",
