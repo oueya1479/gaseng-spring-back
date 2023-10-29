@@ -19,7 +19,6 @@ import javax.validation.Valid;
 public class ChecklistApiController {
     private final ChecklistService checklistService;
 
-    @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "")
     public BaseResponse<Long> create(@RequestParam Long memId, @RequestBody @Valid ChecklistRequest request){
         return new BaseResponse<>(checklistService.create(memId, request.toChecklist()));
