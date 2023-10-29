@@ -61,4 +61,9 @@ public class MemberApiController {
     public BaseResponse<Long> logout(@ExtractPayload Long memId) {
         return new BaseResponse<>(memberService.logout(memId));
     }
+    @Operation(summary = "회원탈퇴", description = "사용자가 회원탈퇴를 진행합니다.")
+    @PostMapping("/sign-out")
+    public BaseResponse<Long> signOut(@ExtractPayload Long memId){
+        return new BaseResponse<>(memberService.signOut(memId));
+    }
 }

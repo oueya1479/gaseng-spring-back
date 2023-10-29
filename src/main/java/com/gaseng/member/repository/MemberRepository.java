@@ -17,7 +17,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByMemNickname(String memNickname);
     Optional<Member> findByMemEmail(Email memEmail);
     Optional<Member> findByMemId(Long id);
-
     @Query("SELECT m.memId AS memId, m.memName AS memName FROM Member m WHERE m.memRole = :memRole ")
     List<MemberListQueryProjection> findMemberByMemRole(@Param("memRole") Role memRole);
 }

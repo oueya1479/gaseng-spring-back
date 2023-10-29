@@ -1,6 +1,9 @@
 package com.gaseng.member.domain;
 
+import com.gaseng.chat.domain.ChatRoom;
+import com.gaseng.checklist.domain.Checklist;
 import com.gaseng.global.common.BaseTimeEntity;
+import com.gaseng.kyc.domain.Kyc;
 import com.gaseng.sharehouse.domain.Sharehouse;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -17,7 +20,7 @@ import java.util.List;
 @Table(name = "member")
 public class Member extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long memId;
 
     @Embedded
@@ -40,6 +43,9 @@ public class Member extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sharehouse> sharehouses = new ArrayList<>();
+
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Checklist checklist;
 
     @Builder
     private Member(Email memEmail, Password memPassword, String memName, String memNickname, Sex memSex, String memPhone) {
