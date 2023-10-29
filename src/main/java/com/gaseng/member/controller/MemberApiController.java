@@ -2,7 +2,6 @@ package com.gaseng.member.controller;
 
 import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
-import com.gaseng.member.domain.Password;
 import com.gaseng.member.dto.*;
 import com.gaseng.member.service.MemberService;
 import com.gaseng.certification.service.MessageService;
@@ -16,8 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
-import static com.gaseng.member.domain.Password.ENCODER;
 
 @Api(tags = "Member Api")
 @RestController
