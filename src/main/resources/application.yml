@@ -1,4 +1,21 @@
 spring:
+  profiles:
+    active: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+---
+spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${RDS_HOST}:3306/gaseng
@@ -18,6 +35,11 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
+  
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 20MB
 
 jwt:
   secret: ${JWT_SECRET}
@@ -40,3 +62,9 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: error
+
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
