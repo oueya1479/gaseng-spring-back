@@ -58,6 +58,9 @@ public class Member extends BaseTimeEntity {
         this.memRole = Role.USER;
         this.memStatus = MemberStatus.WAITING;
     }
+    public void pwUpdate(Password memPassword){
+        this.memPassword = memPassword;
+    }
 
     public static Member registerMember(
             Email memEmail, Password memPassword, String memName, String memNickname, Sex memSex, String memPhone) {
