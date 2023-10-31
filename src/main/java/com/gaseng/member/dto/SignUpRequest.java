@@ -18,17 +18,17 @@ public record SignUpRequest(
         @Schema(description = "이메일", example = "example@gmail.com")
         String email,
 
-        @Size(min = 8, max = 12, message = "8자 이상, 12자 이하여야 합니다.")
+        @Size(min = 8, max = 12, message = "비밀번호는 8자 이상, 12자 이하여야 합니다.")
         @NotBlank(message = "비밀번호는 필수입니다.")
         @Schema(description = "비밀번호", example = "pass1234!")
         String password,
 
-        @Size(min = 2, max = 10, message = "2글자 이상이어야 합니다.")
+        @Size(min = 2, max = 10, message = "이름은 2글자 이상이어야 합니다.")
         @NotBlank(message = "이름은 필수입니다.")
         @Schema(description = "이름", example = "홍길동")
         String name,
 
-        @Size(min = 2, max = 10, message = "2글자 이상이어야 합니다.")
+        @Size(min = 2, max = 10, message = "닉네임은 2글자 이상이어야 합니다.")
         @NotBlank(message = "닉네임은 필수입니다.")
         @Schema(description = "닉네임", example = "길동이")
         String nickname,
@@ -37,7 +37,7 @@ public record SignUpRequest(
         @Schema(description = "성별", example = "0(남자) or 1(여자)")
         Sex sex,
 
-        @Size(min = 10, max = 11, message = "숫자만 입력해주세요.")
+        @Size(min = 10, max = 11, message = "전화번호는 숫자만 입력해주세요.")
         @NotBlank(message = "전화번호는 필수입니다.")
         @Schema(description = "전화번호", example = "01012345678")
         String phone
