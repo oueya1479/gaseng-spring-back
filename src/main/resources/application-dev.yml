@@ -1,4 +1,4 @@
 spring:
-config:
-  import:
-    - classpath:secret.yml
+  config:
+    import:
+      - classpath:secret.yml

@@ -9,12 +9,15 @@ import com.gaseng.member.domain.Member;
 import com.gaseng.member.service.MemberInfoService;
 import com.gaseng.sharehouse.domain.Sharehouse;
 import com.gaseng.sharehouse.domain.SharehouseStatus;
+import com.gaseng.sharehouse.dto.SharehouseListResponse;
 import com.gaseng.sharehouse.dto.SharehouseRequest;
 import com.gaseng.sharehouse.dto.SharehouseResponse;
 import com.gaseng.sharehouse.dto.SharehouseUpdateRequest;
 import com.gaseng.sharehouse.exception.SharehouseErrorCode;
 import com.gaseng.sharehouse.repository.SharehouseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -138,5 +141,11 @@ public class SharehouseService {
 	public Sharehouse findSharehouseByShrId(Long shrId) {
 		return sharehouseRepository.findByShrId(shrId)
 				.orElseThrow(() -> BaseException.type(SharehouseErrorCode.SHAREHOUSE_NOT_FOUND));
+	}
+
+
+	public Slice<SharehouseListResponse> mySharehouse(Long memId, Pageable pageable) {
+		Member member = memberInfoService.findByMemId(memId);
+		return sharehouseRepository.findByMemberOrderByShrIdDesc(member, pageable);
 	}
 }

@@ -2,13 +2,14 @@ package com.gaseng.sharehouse.controller;
 
 import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
-import com.gaseng.sharehouse.dto.SharehouseDeleteRequest;
-import com.gaseng.sharehouse.dto.SharehouseRequest;
-import com.gaseng.sharehouse.dto.SharehouseResponse;
-import com.gaseng.sharehouse.dto.SharehouseUpdateRequest;
+import com.gaseng.sharehouse.domain.Sharehouse;
+import com.gaseng.sharehouse.dto.*;
 import com.gaseng.sharehouse.service.SharehouseService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,8 +62,17 @@ public class SharehouseApiController {
     @DeleteMapping(value = "")
     public BaseResponse<Long> delete(
             @ExtractPayload Long memId,
-            @RequestBody @Valid SharehouseDeleteRequest request
+            @Valid SharehouseDeleteRequest request
     ) {
         return new BaseResponse<>(sharehouseService.deleteSharehouse(memId, request.id()));
+    }
+
+    @GetMapping("/my")
+    public BaseResponse<Slice<SharehouseListResponse>> mySharehouse(
+            @ExtractPayload Long memId,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return new BaseResponse<> (sharehouseService.mySharehouse(memId, pageable));
     }
 }

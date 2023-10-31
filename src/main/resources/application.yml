@@ -68,3 +68,9 @@ logging:
         type:
           descriptor:
             sql: trace
+
+coolsms:
+  api:
+    key: ${COOL_KEY}
+    secret: ${COOL_SECRET}
+    phone: ${COOL_PHONE}
