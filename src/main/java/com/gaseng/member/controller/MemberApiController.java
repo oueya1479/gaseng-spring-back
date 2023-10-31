@@ -69,7 +69,7 @@ public class MemberApiController {
 
     @Operation(summary = "인증번호 인증", description = "사용자가 인증번호 인증을 진행합니다.")
     @PostMapping("/search-id/verify")
-    public BaseResponse<Long> searchVerify(@RequestBody @Valid CertificationRequest request){
+    public BaseResponse<String> searchVerify(@RequestBody @Valid CertificationRequest request){
         return new BaseResponse<>(messageService.searchVerifyId(request.num(),request.phone()));
     }
 

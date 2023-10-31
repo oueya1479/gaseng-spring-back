@@ -1,9 +1,7 @@
 package com.gaseng.member.domain;
 
-import com.gaseng.chat.domain.ChatRoom;
 import com.gaseng.checklist.domain.Checklist;
 import com.gaseng.global.common.BaseTimeEntity;
-import com.gaseng.kyc.domain.Kyc;
 import com.gaseng.sharehouse.domain.Sharehouse;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -56,10 +54,7 @@ public class Member extends BaseTimeEntity {
         this.memSex = memSex;
         this.memPhone = memPhone;
         this.memRole = Role.USER;
-        this.memStatus = MemberStatus.WAITING;
-    }
-    public void pwUpdate(Password memPassword){
-        this.memPassword = memPassword;
+        this.memStatus = MemberStatus.NORMAL;
     }
 
     public static Member registerMember(
@@ -73,5 +68,9 @@ public class Member extends BaseTimeEntity {
 
     public void toReject() {
         this.memStatus = MemberStatus.REJECT;
+    }
+
+    public void pwUpdate(Password memPassword){
+        this.memPassword = memPassword;
     }
 }

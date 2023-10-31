@@ -56,13 +56,13 @@ public class MessageService {
     }
 
     @Transactional
-    public Long searchVerifyId(String num, String phone) {
+    public String searchVerifyId(String num, String phone) {
         List<Certification> certs = certificationRepository.findByCertPhoneAndCertSearchOrderByExpirationDateDesc(phone,ID);
         if (certs.get(0).getCertNum().equals(num)) {
             for (Certification cert : certs) {
                 certificationRepository.delete(cert);
             }
-            return certs.get(0).getMember().getMemId();
+            return certs.get(0).getMember().getMemEmail().getValue();
         }
         throw BaseException.type(CertificationErrorCode.CERTIFICATION_MISMATCH);
     }

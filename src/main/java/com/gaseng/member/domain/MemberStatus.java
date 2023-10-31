@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum MemberStatus {
     NORMAL("노멀"),
     WAITING("대기"),
-    REJECT("거절")
+    REJECT("거절"),
+    APPROVE("승인"),
     ;
 
     private String value;

@@ -11,7 +11,7 @@ public record LoginRequest(
         @Schema(description = "이메일", example = "example@gmail.com")
         String email,
 
-        @Size(min = 8, max = 12, message = "8자 이상, 12자 이하여야 합니다.")
+        @Size(min = 8, max = 12, message = "비밀번호는 8자 이상, 12자 이하여야 합니다.")
         @NotBlank(message = "비밀번호를 입력해주세요.")
         @Schema(description = "비밀번호", example = "pass1234!")
         String password
