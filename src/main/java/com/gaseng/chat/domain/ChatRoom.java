@@ -32,6 +32,8 @@ public class ChatRoom {
     @JoinColumn(name = "shr_id", nullable = false)
     private Sharehouse sharehouse;
 
+    private ChatRoomStatus chatRoomStatus;
+
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages = new ArrayList<>();
 
@@ -40,6 +42,7 @@ public class ChatRoom {
         this.sender = sender;
         this.receiver = receiver;
         this.sharehouse = sharehouse;
+        this.chatRoomStatus = ChatRoomStatus.ACTIVE;
     }
 
     public static ChatRoom create(Member sender, Member receiver, Sharehouse sharehouse) {
