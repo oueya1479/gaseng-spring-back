@@ -75,4 +75,10 @@ public class SharehouseApiController {
         Pageable pageable = PageRequest.of(page, size);
         return new BaseResponse<> (sharehouseService.mySharehouse(memId, pageable));
     }
+    
+    @GetMapping("/my-share")
+    public BaseResponse<List<SharehouseListResponse>> getMyShareHouse(
+            @ExtractPayload Long memId) {
+        return new BaseResponse<> (sharehouseService.getMySharehouse(memId));
+    }
 }
