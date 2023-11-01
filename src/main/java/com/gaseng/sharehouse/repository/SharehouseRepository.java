@@ -17,6 +17,7 @@ import java.util.Optional;
 public interface SharehouseRepository extends JpaRepository<Sharehouse,Long> {
     Optional<Sharehouse> findByShrId(Long shrId);
     List<Sharehouse> findByMember(Member member);
+    List<Sharehouse> findByMemberOrderByCreatedDateDesc(Member member);
 
     Slice<SharehouseListResponse> findByMemberOrderByShrIdDesc(Member member, Pageable pageable);
 
