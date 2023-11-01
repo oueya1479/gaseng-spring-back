@@ -148,4 +148,21 @@ public class SharehouseService {
 		Member member = memberInfoService.findByMemId(memId);
 		return sharehouseRepository.findByMemberOrderByShrIdDesc(member, pageable);
 	}
+	
+	public List<SharehouseListResponse> getMySharehouse(Long memId) {
+		Member member = memberInfoService.findByMemId(memId);
+		List<Sharehouse> list = sharehouseRepository.findByMember(member);
+		List<SharehouseListResponse> responses = new ArrayList<SharehouseListResponse>();
+		for (Sharehouse sharehouse : list) {
+			responses.add(
+				new SharehouseListResponse(
+					sharehouse.getShrId(), 
+					sharehouse.getShrTitle(), 
+					sharehouse.getShrDescription(), 
+					sharehouse.getShrAddress(), 
+					sharehouse.getShrPoster()
+				));
+		}
+		return responses;
+	}
 }
