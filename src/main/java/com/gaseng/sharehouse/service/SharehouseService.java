@@ -46,6 +46,7 @@ public class SharehouseService {
     	
 		return new SharehouseResponse(
 				shrId,
+				sharehouse.getMember().getMemId(),
 				sharehouse.getShrTitle(),
 				sharehouse.getShrDescription(),
 				sharehouse.getShrAddress(),
@@ -67,6 +68,7 @@ public class SharehouseService {
         	
         	responses.add(new SharehouseResponse(
         			sharehouse.getShrId(),
+        			sharehouse.getMember().getMemId(),
         			sharehouse.getShrTitle(), 
         			sharehouse.getShrDescription(), 
         			sharehouse.getShrAddress(), 
