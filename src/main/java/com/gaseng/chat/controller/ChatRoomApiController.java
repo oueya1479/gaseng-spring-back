@@ -37,8 +37,16 @@ public class ChatRoomApiController {
     }
 
     @PreAuthorize("hasRole('USER')")
+    @Operation(summary = "채팅방 접속", description = "사용자가 채팅방에 접속하여 채팅방 상세 조회를 합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),
+            @ApiResponse(responseCode = "400", description = "채팅이 불가능한 채팅방입니다."),
+            @ApiResponse(responseCode = "404", description = "채팅방을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
+    })
     @PostMapping("/{chatRoomId}")
-    public BaseResponse<EnterChatRoomResponse> enterChatRoom(@PathVariable Long chatRoomId) {
+    public BaseResponse<EnterChatRoomResponse> enterChatRoom(@Parameter(description = "chatroom id", required = true, example = "1")
+                                                             @PathVariable Long chatRoomId) {
         return new BaseResponse<>(chatRoomService.enterChatRoom(chatRoomId));
     }
 }
