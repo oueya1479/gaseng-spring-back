@@ -36,6 +36,7 @@ public class ChatRoomApiController {
         return new BaseResponse<>(chatRoomService.create(memId, shrId));
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/{chatRoomId}")
     public BaseResponse<EnterChatRoomResponse> enterChatRoom(@PathVariable Long chatRoomId) {
         return new BaseResponse<>(chatRoomService.enterChatRoom(chatRoomId));
