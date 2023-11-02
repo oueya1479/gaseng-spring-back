@@ -30,10 +30,10 @@ public class ChatRoomApiController {
             @ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
     })
     @PostMapping("")
-    public BaseResponse<ChatRoomResponse> create(@ExtractPayload Long memId,
-                                                 @Parameter(description = "sharehouse id", required = true, example = "1")
-                                                 @RequestParam Long shrId) {
-        return new BaseResponse<>(chatRoomService.create(memId, shrId));
+    public BaseResponse<ChatRoomResponse> createChatRoom(@ExtractPayload Long memId,
+                                                         @Parameter(description = "sharehouse id", required = true, example = "1")
+                                                         @RequestParam Long shrId) {
+        return new BaseResponse<>(chatRoomService.createChatRoom(memId, shrId));
     }
 
     @PreAuthorize("hasRole('USER')")

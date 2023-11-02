@@ -26,7 +26,7 @@ public class ChatRoomService {
     private final MemberInfoService memberInfoService;
 
     @Transactional
-    public ChatRoomResponse create(Long memId, Long shrId) {
+    public ChatRoomResponse createChatRoom(Long memId, Long shrId) {
         Member sender = memberInfoService.findByMemId(memId);
         Sharehouse sharehouse = sharehouseService.findSharehouseByShrId(shrId);
 
