@@ -1,8 +1,8 @@
 package com.gaseng.chat.service;
 
 import com.gaseng.chat.domain.ChatRoom;
-import com.gaseng.chat.dto.ChatRoomResponse;
-import com.gaseng.chat.dto.EnterChatRoomResponse;
+import com.gaseng.chat.dto.ChatRoomCreateResponse;
+import com.gaseng.chat.dto.ChatRoomEnterResponse;
 import com.gaseng.chat.exception.ChatRoomErrorCode;
 import com.gaseng.chat.repository.ChatRoomRepository;
 import com.gaseng.global.exception.BaseException;
@@ -26,25 +26,25 @@ public class ChatRoomService {
     private final MemberInfoService memberInfoService;
 
     @Transactional
-    public ChatRoomResponse createChatRoom(Long memId, Long shrId) {
+    public ChatRoomCreateResponse createChatRoom(Long memId, Long shrId) {
         Member sender = memberInfoService.findByMemId(memId);
         Sharehouse sharehouse = sharehouseService.findSharehouseByShrId(shrId);
 
         validateDuplicateChatRoom(sender, sharehouse.getMember(), sharehouse);
         ChatRoom chatRoom = chatRoomRepository.save(ChatRoom.create(sender, sharehouse.getMember(), sharehouse));
 
-        return new ChatRoomResponse(
+        return new ChatRoomCreateResponse(
                 chatRoom.getChatRoomId(),
                 chatRoom.getSender().getMemId(),
                 chatRoom.getReceiver().getMemId()
         );
     }
 
-    public EnterChatRoomResponse enterChatRoom(Long chatRoomId) {
+    public ChatRoomEnterResponse enterChatRoom(Long chatRoomId) {
         ChatRoom chatRoom = findByChatRoomId(chatRoomId);
         validateActiveChatRoom(chatRoom);
 
-        return new EnterChatRoomResponse(
+        return new ChatRoomEnterResponse(
                 chatRoom.getSender().getMemNickname(),
                 chatRoom.getReceiver().getMemNickname(),
                 chatRoom.getChatRoomStatus().getValue()

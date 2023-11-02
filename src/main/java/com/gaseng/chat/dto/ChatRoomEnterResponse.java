@@ -2,7 +2,7 @@ package com.gaseng.chat.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public record EnterChatRoomResponse(
+public record ChatRoomEnterResponse(
         @Schema(description = "sender nickname", example = "닉네임1")
         String senderNickname,
 

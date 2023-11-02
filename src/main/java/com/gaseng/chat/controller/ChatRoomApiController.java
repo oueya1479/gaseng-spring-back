@@ -1,7 +1,7 @@
 package com.gaseng.chat.controller;
 
-import com.gaseng.chat.dto.ChatRoomResponse;
-import com.gaseng.chat.dto.EnterChatRoomResponse;
+import com.gaseng.chat.dto.ChatRoomCreateResponse;
+import com.gaseng.chat.dto.ChatRoomEnterResponse;
 import com.gaseng.chat.service.ChatRoomService;
 import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
@@ -30,8 +30,8 @@ public class ChatRoomApiController {
             @ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
     })
     @PostMapping("")
-    public BaseResponse<ChatRoomResponse> createChatRoom(@ExtractPayload Long memId,
-                                                         @Parameter(description = "sharehouse id", required = true, example = "1")
+    public BaseResponse<ChatRoomCreateResponse> createChatRoom(@ExtractPayload Long memId,
+                                                               @Parameter(description = "sharehouse id", required = true, example = "1")
                                                          @RequestParam Long shrId) {
         return new BaseResponse<>(chatRoomService.createChatRoom(memId, shrId));
     }
@@ -45,7 +45,7 @@ public class ChatRoomApiController {
             @ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
     })
     @PostMapping("/{chatRoomId}")
-    public BaseResponse<EnterChatRoomResponse> enterChatRoom(@Parameter(description = "chatroom id", required = true, example = "1")
+    public BaseResponse<ChatRoomEnterResponse> enterChatRoom(@Parameter(description = "chatroom id", required = true, example = "1")
                                                              @PathVariable Long chatRoomId) {
         return new BaseResponse<>(chatRoomService.enterChatRoom(chatRoomId));
     }
