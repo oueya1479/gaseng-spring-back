@@ -1,6 +1,7 @@
 package com.gaseng.chat.controller;
 
 import com.gaseng.chat.dto.ChatRoomResponse;
+import com.gaseng.chat.dto.EnterChatRoomResponse;
 import com.gaseng.chat.service.ChatRoomService;
 import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
@@ -11,10 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "Chat Api")
 @RestController
@@ -36,5 +34,10 @@ public class ChatRoomApiController {
                                                  @Parameter(description = "sharehouse id", required = true, example = "1")
                                                  @RequestParam Long shrId) {
         return new BaseResponse<>(chatRoomService.create(memId, shrId));
+    }
+
+    @PostMapping("/{chatRoomId}")
+    public BaseResponse<EnterChatRoomResponse> enterChatRoom(@PathVariable Long chatRoomId) {
+        return new BaseResponse<>(chatRoomService.enterChatRoom(chatRoomId));
     }
 }

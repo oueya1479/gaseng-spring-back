@@ -48,4 +48,8 @@ public class ChatRoom {
     public static ChatRoom create(Member sender, Member receiver, Sharehouse sharehouse) {
         return new ChatRoom(sender, receiver, sharehouse);
     }
+
+    public void toInactive() {
+        this.chatRoomStatus = ChatRoomStatus.INACTIVE;
+    }
 }
