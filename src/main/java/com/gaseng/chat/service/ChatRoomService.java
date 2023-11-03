@@ -32,9 +32,13 @@ public class ChatRoomService {
     public ChatRoomCreateResponse createChatRoom(Long memId, Long shrId) {
         Member sender = memberInfoService.findByMemId(memId);
         Sharehouse sharehouse = sharehouseService.findSharehouseByShrId(shrId);
+        Member receiver = sharehouse.getMember();
 
-        validateDuplicateChatRoom(sender, sharehouse.getMember(), sharehouse);
-        ChatRoom chatRoom = chatRoomRepository.save(ChatRoom.create(sender, sharehouse.getMember(), sharehouse));
+        validateDuplicateChatRoom(sender, receiver, sharehouse);
+        ChatRoom chatRoom = chatRoomRepository.save(ChatRoom.create(sender, receiver, sharehouse));
+
+        memberChatRoomRepository.save(MemberChatRoom.create(chatRoom, sender));
+        memberChatRoomRepository.save(MemberChatRoom.create(chatRoom, receiver));
 
         return new ChatRoomCreateResponse(
                 chatRoom.getChatRoomId(),
