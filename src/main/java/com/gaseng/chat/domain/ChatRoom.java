@@ -1,5 +1,6 @@
 package com.gaseng.chat.domain;
 
+import com.gaseng.global.common.BaseTimeEntity;
 import com.gaseng.member.domain.Member;
 import com.gaseng.sharehouse.domain.Sharehouse;
 import lombok.AccessLevel;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "chat_room")
-public class ChatRoom {
+public class ChatRoom extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatRoomId;
@@ -34,6 +36,8 @@ public class ChatRoom {
 
     private ChatRoomStatus chatRoomStatus;
 
+    private String message;
+
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages = new ArrayList<>();
 
@@ -51,5 +55,10 @@ public class ChatRoom {
 
     public void toInactive() {
         this.chatRoomStatus = ChatRoomStatus.INACTIVE;
+    }
+
+    public void updateMessage(String message, LocalDateTime modifiedDate) {
+        this.message = message;
+        this.updateModifiedDate(modifiedDate);
     }
 }
