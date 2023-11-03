@@ -1,10 +1,12 @@
 package com.gaseng.chat.service;
 
 import com.gaseng.chat.domain.ChatRoom;
+import com.gaseng.chat.domain.MemberChatRoom;
 import com.gaseng.chat.dto.ChatRoomCreateResponse;
 import com.gaseng.chat.dto.ChatRoomEnterResponse;
 import com.gaseng.chat.exception.ChatRoomErrorCode;
 import com.gaseng.chat.repository.ChatRoomRepository;
+import com.gaseng.chat.repository.MemberChatRoomRepository;
 import com.gaseng.global.exception.BaseException;
 import com.gaseng.member.domain.Member;
 import com.gaseng.member.service.MemberInfoService;
@@ -24,6 +26,7 @@ public class ChatRoomService {
     private final SharehouseService sharehouseService;
     private final SharehouseRepository sharehouseRepository;
     private final MemberInfoService memberInfoService;
+    private final MemberChatRoomRepository memberChatRoomRepository;
 
     @Transactional
     public ChatRoomCreateResponse createChatRoom(Long memId, Long shrId) {
@@ -51,8 +54,24 @@ public class ChatRoomService {
         );
     }
 
+    @Transactional
+    public Long deleteChatRoom(Long memId, Long chatRoomId) {
+        MemberChatRoom memberChatRoom = findByMemIdAndChatRoomId(memId, chatRoomId);
+        ChatRoom chatRoom = findByChatRoomId(chatRoomId);
+
+        chatRoom.toInactive();
+        memberChatRoomRepository.delete(memberChatRoom);
+
+        return chatRoomId;
+    }
+
     public ChatRoom findByChatRoomId(Long chatRoomId) {
         return chatRoomRepository.findByChatRoomId(chatRoomId)
+                .orElseThrow(() -> BaseException.type(ChatRoomErrorCode.CHAT_ROOM_NOT_FOUND));
+    }
+
+    public MemberChatRoom findByMemIdAndChatRoomId(Long memId, Long chatRoomId) {
+        return memberChatRoomRepository.findByMemberMemIdAndChatRoomChatRoomId(memId, chatRoomId)
                 .orElseThrow(() -> BaseException.type(ChatRoomErrorCode.CHAT_ROOM_NOT_FOUND));
     }
 

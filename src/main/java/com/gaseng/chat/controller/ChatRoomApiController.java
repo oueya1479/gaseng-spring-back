@@ -32,12 +32,12 @@ public class ChatRoomApiController {
     @PostMapping("")
     public BaseResponse<ChatRoomCreateResponse> createChatRoom(@ExtractPayload Long memId,
                                                                @Parameter(description = "sharehouse id", required = true, example = "1")
-                                                         @RequestParam Long shrId) {
+                                                               @RequestParam Long shrId) {
         return new BaseResponse<>(chatRoomService.createChatRoom(memId, shrId));
     }
 
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "채팅방 접속", description = "사용자가 채팅방에 접속하여 채팅방 상세 조회를 합니다.")
+    @Operation(summary = "채팅방 접속", description = "사용자가 채팅방에 접속하여 채팅을 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),
             @ApiResponse(responseCode = "400", description = "채팅이 불가능한 채팅방입니다."),
@@ -48,5 +48,11 @@ public class ChatRoomApiController {
     public BaseResponse<ChatRoomEnterResponse> enterChatRoom(@Parameter(description = "chatroom id", required = true, example = "1")
                                                              @PathVariable Long chatRoomId) {
         return new BaseResponse<>(chatRoomService.enterChatRoom(chatRoomId));
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @DeleteMapping("/{chatRoomId}")
+    public BaseResponse<Long> deleteChatRoom(@ExtractPayload Long memId, @PathVariable Long chatRoomId) {
+        return new BaseResponse<>(chatRoomService.deleteChatRoom(memId, chatRoomId));
     }
 }
