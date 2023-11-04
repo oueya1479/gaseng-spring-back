@@ -2,6 +2,7 @@ package com.gaseng.chat.controller;
 
 import com.gaseng.chat.dto.ChatRoomCreateResponse;
 import com.gaseng.chat.dto.ChatRoomEnterResponse;
+import com.gaseng.chat.dto.ChatRoomListResponse;
 import com.gaseng.chat.service.ChatRoomService;
 import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
@@ -14,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = "ChatRoom Api")
+import java.util.List;
+
+@Api(tags = "Chat Api")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/chat")
@@ -54,6 +57,14 @@ public class ChatRoomApiController {
     @PatchMapping("/{chatRoomId}")
     public BaseResponse<Long> updateMessage(@PathVariable Long chatRoomId, @RequestBody String message) {
         return new BaseResponse<>(chatRoomService.updateMessage(chatRoomId, message));
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("")
+    public BaseResponse<List<ChatRoomListResponse>> getChatRoomList(@ExtractPayload Long memId,
+                                                                    @RequestParam(value = "page") int pageSize,
+                                                                    @RequestParam(value = "index", defaultValue = "-1", required = false) Long lastChatRoomId) {
+        return new BaseResponse<>(chatRoomService.getChatRoomList(memId, pageSize, lastChatRoomId));
     }
 
     @PreAuthorize("hasRole('USER')")

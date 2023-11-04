@@ -5,18 +5,23 @@ import com.gaseng.chat.domain.ChatRoomStatus;
 import com.gaseng.chat.domain.MemberChatRoom;
 import com.gaseng.chat.dto.ChatRoomCreateResponse;
 import com.gaseng.chat.dto.ChatRoomEnterResponse;
+import com.gaseng.chat.dto.ChatRoomListResponse;
 import com.gaseng.chat.exception.ChatRoomErrorCode;
 import com.gaseng.chat.repository.ChatRoomRepository;
 import com.gaseng.chat.repository.MemberChatRoomRepository;
+import com.gaseng.chat.repository.query.ChatRoomListQueryProjection;
 import com.gaseng.global.exception.BaseException;
+import com.gaseng.global.util.LocalDateTimeFormatter;
 import com.gaseng.member.domain.Member;
 import com.gaseng.member.service.MemberInfoService;
 import com.gaseng.sharehouse.domain.Sharehouse;
-import com.gaseng.sharehouse.repository.SharehouseRepository;
 import com.gaseng.sharehouse.service.SharehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final SharehouseService sharehouseService;
-    private final SharehouseRepository sharehouseRepository;
     private final MemberInfoService memberInfoService;
     private final MemberChatRoomRepository memberChatRoomRepository;
 
@@ -66,6 +70,19 @@ public class ChatRoomService {
         return chatRoomId;
     }
 
+    public List<ChatRoomListResponse> getChatRoomList(Long memId, int pageSize, Long lastChatRoomId) {
+        Member member = memberInfoService.findByMemId(memId);
+        List<ChatRoomListQueryProjection> chatRooms = memberChatRoomRepository.findChatRoomsByMemId(memId);
+
+        List<ChatRoomListResponse> chatRoomList = chatRooms.stream()
+                .map(chatRoom -> filterMemberAndFormatTime(member, chatRoom))
+                .collect(Collectors.toList());
+
+        int lastIndex = getLastIndex(chatRoomList, lastChatRoomId);
+
+        return getList(chatRoomList, lastIndex, pageSize);
+    }
+
     @Transactional
     public Long deleteChatRoom(Long memId, Long chatRoomId) {
         MemberChatRoom memberChatRoom = findByMemIdAndChatRoomId(memId, chatRoomId);
@@ -97,5 +114,46 @@ public class ChatRoomService {
         if (chatRoom.getChatRoomStatus().equals(ChatRoomStatus.INACTIVE)) {
             throw BaseException.type(ChatRoomErrorCode.INACTIVE_CHAT_ROOM);
         }
+    }
+
+    private ChatRoomListResponse filterMemberAndFormatTime(Member member, ChatRoomListQueryProjection chatRoom) {
+        String partnerNickname = filterPartnerNickname(member, chatRoom);
+        String formattedTime = formatModifiedDate(chatRoom);
+
+        return new ChatRoomListResponse(
+                chatRoom.getChatRoomId(),
+                partnerNickname,
+                chatRoom.getMessage(),
+                formattedTime
+        );
+    }
+
+    private String filterPartnerNickname(Member member, ChatRoomListQueryProjection chatRoom) {
+        String senderNickname = chatRoom.getSenderNickname();
+        String receiverNickname = chatRoom.getReceiverNickname();
+
+        return member.getMemNickname().equals(senderNickname)
+                ? receiverNickname
+                : senderNickname;
+    }
+
+    private String formatModifiedDate(ChatRoomListQueryProjection chatRoom) {
+        return LocalDateTimeFormatter.formatTimeDifference(chatRoom.getModifiedDate());
+    }
+
+    private int getLastIndex(List<ChatRoomListResponse> chatRoomList, Long lastChatRoomId) {
+        return chatRoomList.indexOf(
+                chatRoomList.stream()
+                        .filter(chatRoom -> chatRoom.chatRoomId().equals(lastChatRoomId))
+                        .findFirst()
+                        .orElse(null)
+        );
+    }
+
+    private List<ChatRoomListResponse> getList(List<ChatRoomListResponse> chatRoomList, int lastIndex, int size) {
+        if (lastIndex + 1 + size >= chatRoomList.size()) {
+            return (chatRoomList.subList(lastIndex + 1, chatRoomList.size()));
+        }
+        return (chatRoomList.subList(lastIndex + 1, lastIndex + 1 + size));
     }
 }
