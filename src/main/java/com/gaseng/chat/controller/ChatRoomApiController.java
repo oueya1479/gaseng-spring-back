@@ -85,7 +85,7 @@ public class ChatRoomApiController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "채팅방 전체 조회", description = "사용자의 전체 채팅방 목록을 조회합니다.")
+    @Operation(summary = "채팅방 나가기", description = "사용자가 채팅방 나가기를 합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),
             @ApiResponse(responseCode = "404", description = "채팅방을 찾을 수 없습니다."),
