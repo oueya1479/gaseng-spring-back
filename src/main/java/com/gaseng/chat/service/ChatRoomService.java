@@ -28,9 +28,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
+    private final MemberChatRoomRepository memberChatRoomRepository;
     private final SharehouseService sharehouseService;
     private final MemberInfoService memberInfoService;
-    private final MemberChatRoomRepository memberChatRoomRepository;
+    private final ChatRoomFindService chatRoomFindService;
 
     @Transactional
     public ChatRoomCreateResponse createChatRoom(Long memId, Long shrId) {
@@ -52,7 +53,7 @@ public class ChatRoomService {
     }
 
     public ChatRoomEnterResponse enterChatRoom(Long chatRoomId) {
-        ChatRoom chatRoom = findByChatRoomId(chatRoomId);
+        ChatRoom chatRoom = chatRoomFindService.findByChatRoomId(chatRoomId);
 
         return new ChatRoomEnterResponse(
                 chatRoom.getSender().getMemNickname(),
@@ -63,7 +64,7 @@ public class ChatRoomService {
 
     @Transactional
     public Long updateMessage(Long chatRoomId, String message) {
-        ChatRoom chatRoom = findByChatRoomId(chatRoomId);
+        ChatRoom chatRoom = chatRoomFindService.findByChatRoomId(chatRoomId);
         validateActiveChatRoom(chatRoom);
         chatRoom.updateMessage(message);
 
@@ -85,23 +86,13 @@ public class ChatRoomService {
 
     @Transactional
     public Long deleteChatRoom(Long memId, Long chatRoomId) {
-        MemberChatRoom memberChatRoom = findByMemIdAndChatRoomId(memId, chatRoomId);
-        ChatRoom chatRoom = findByChatRoomId(chatRoomId);
+        MemberChatRoom memberChatRoom = chatRoomFindService.findByMemIdAndChatRoomId(memId, chatRoomId);
+        ChatRoom chatRoom = chatRoomFindService.findByChatRoomId(chatRoomId);
 
         chatRoom.toInactive();
         memberChatRoomRepository.delete(memberChatRoom);
 
         return chatRoomId;
-    }
-
-    public ChatRoom findByChatRoomId(Long chatRoomId) {
-        return chatRoomRepository.findByChatRoomId(chatRoomId)
-                .orElseThrow(() -> BaseException.type(ChatRoomErrorCode.CHAT_ROOM_NOT_FOUND));
-    }
-
-    public MemberChatRoom findByMemIdAndChatRoomId(Long memId, Long chatRoomId) {
-        return memberChatRoomRepository.findByMemberMemIdAndChatRoomChatRoomId(memId, chatRoomId)
-                .orElseThrow(() -> BaseException.type(ChatRoomErrorCode.CHAT_ROOM_NOT_FOUND));
     }
 
     private void validateDuplicateChatRoom(Member sender, Member receiver, Sharehouse sharehouse) {
