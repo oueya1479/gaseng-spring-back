@@ -1,6 +1,7 @@
 package com.gaseng.chat.service;
 
 import com.gaseng.chat.domain.ChatRoom;
+import com.gaseng.chat.domain.ChatRoomStatus;
 import com.gaseng.chat.domain.MemberChatRoom;
 import com.gaseng.chat.dto.ChatRoomCreateResponse;
 import com.gaseng.chat.dto.ChatRoomEnterResponse;
@@ -11,7 +12,6 @@ import com.gaseng.global.exception.BaseException;
 import com.gaseng.member.domain.Member;
 import com.gaseng.member.service.MemberInfoService;
 import com.gaseng.sharehouse.domain.Sharehouse;
-import com.gaseng.sharehouse.domain.SharehouseStatus;
 import com.gaseng.sharehouse.repository.SharehouseRepository;
 import com.gaseng.sharehouse.service.SharehouseService;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +49,6 @@ public class ChatRoomService {
 
     public ChatRoomEnterResponse enterChatRoom(Long chatRoomId) {
         ChatRoom chatRoom = findByChatRoomId(chatRoomId);
-        validateActiveChatRoom(chatRoom);
 
         return new ChatRoomEnterResponse(
                 chatRoom.getSender().getMemNickname(),
@@ -61,6 +60,7 @@ public class ChatRoomService {
     @Transactional
     public Long updateMessage(Long chatRoomId, String message) {
         ChatRoom chatRoom = findByChatRoomId(chatRoomId);
+        validateActiveChatRoom(chatRoom);
         chatRoom.updateMessage(message);
 
         return chatRoomId;
@@ -94,20 +94,7 @@ public class ChatRoomService {
     }
 
     private void validateActiveChatRoom(ChatRoom chatRoom) {
-        isExistsSharehouse(chatRoom);
-        isDisableSharehouse(chatRoom);
-    }
-
-    private void isExistsSharehouse(ChatRoom chatRoom) {
-        Long shrId = chatRoom.getSharehouse().getShrId();
-        if (!sharehouseRepository.existsByShrId(shrId)) {
-            throw BaseException.type(ChatRoomErrorCode.INACTIVE_CHAT_ROOM);
-        }
-    }
-
-    private void isDisableSharehouse(ChatRoom chatRoom) {
-        Sharehouse sharehouse = chatRoom.getSharehouse();
-        if (sharehouse.getShrStatus().equals(SharehouseStatus.DISABLE)) {
+        if (chatRoom.getChatRoomStatus().equals(ChatRoomStatus.INACTIVE)) {
             throw BaseException.type(ChatRoomErrorCode.INACTIVE_CHAT_ROOM);
         }
     }
