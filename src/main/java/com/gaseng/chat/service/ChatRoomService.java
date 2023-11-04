@@ -59,6 +59,14 @@ public class ChatRoomService {
     }
 
     @Transactional
+    public Long updateMessage(Long chatRoomId, String message) {
+        ChatRoom chatRoom = findByChatRoomId(chatRoomId);
+        chatRoom.updateMessage(message);
+
+        return chatRoomId;
+    }
+
+    @Transactional
     public Long deleteChatRoom(Long memId, Long chatRoomId) {
         MemberChatRoom memberChatRoom = findByMemIdAndChatRoomId(memId, chatRoomId);
         ChatRoom chatRoom = findByChatRoomId(chatRoomId);

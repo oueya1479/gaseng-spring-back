@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,8 +56,7 @@ public class ChatRoom extends BaseTimeEntity {
         this.chatRoomStatus = ChatRoomStatus.INACTIVE;
     }
 
-    public void updateMessage(String message, LocalDateTime modifiedDate) {
+    public void updateMessage(String message) {
         this.message = message;
-        this.updateModifiedDate(modifiedDate);
     }
 }

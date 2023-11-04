@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = "Chat Api")
+@Api(tags = "ChatRoom Api")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/chat")
@@ -48,6 +48,12 @@ public class ChatRoomApiController {
     public BaseResponse<ChatRoomEnterResponse> enterChatRoom(@Parameter(description = "chatroom id", required = true, example = "1")
                                                              @PathVariable Long chatRoomId) {
         return new BaseResponse<>(chatRoomService.enterChatRoom(chatRoomId));
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @PatchMapping("/{chatRoomId}")
+    public BaseResponse<Long> updateMessage(@PathVariable Long chatRoomId, @RequestBody String message) {
+        return new BaseResponse<>(chatRoomService.updateMessage(chatRoomId, message));
     }
 
     @PreAuthorize("hasRole('USER')")
