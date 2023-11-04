@@ -9,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,9 +34,6 @@ public class ChatRoom extends BaseTimeEntity {
     private ChatRoomStatus chatRoomStatus;
 
     private String message;
-
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Message> messages = new ArrayList<>();
 
     @Builder
     public ChatRoom(Member sender, Member receiver, Sharehouse sharehouse) {
