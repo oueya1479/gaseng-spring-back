@@ -21,7 +21,7 @@ import static com.gaseng.member.dto.AccountResponse.toResponse;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberManageService {
-    private final MemberInfoService memberInfoService;
+    private final MemberFindService memberFindService;
     private final MemberRepository memberRepository;
 
     public MemberListResponse getMemberList(int pageSize, Long lastMemId) {
@@ -32,14 +32,14 @@ public class MemberManageService {
     }
 
     public AccountResponse getAccount(Long memId) {
-        Member member = memberInfoService.findByMemId(memId);
+        Member member = memberFindService.findByMemId(memId);
 
         return toResponse(member);
     }
 
     @Transactional
     public Long toNormal(Long memId) {
-        Member member = memberInfoService.findByMemId(memId);
+        Member member = memberFindService.findByMemId(memId);
         validateIsStatusNormal(member);
         member.toNormal();
 
@@ -48,7 +48,7 @@ public class MemberManageService {
 
     @Transactional
     public Long toReject(Long memId) {
-        Member member = memberInfoService.findByMemId(memId);
+        Member member = memberFindService.findByMemId(memId);
         validateIsStatusReject(member);
         member.toReject();
 

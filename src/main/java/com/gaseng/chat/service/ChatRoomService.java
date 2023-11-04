@@ -13,7 +13,7 @@ import com.gaseng.chat.repository.query.ChatRoomListQueryProjection;
 import com.gaseng.global.exception.BaseException;
 import com.gaseng.global.util.LocalDateTimeFormatter;
 import com.gaseng.member.domain.Member;
-import com.gaseng.member.service.MemberInfoService;
+import com.gaseng.member.service.MemberFindService;
 import com.gaseng.sharehouse.domain.Sharehouse;
 import com.gaseng.sharehouse.service.SharehouseService;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +30,12 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final MemberChatRoomRepository memberChatRoomRepository;
     private final SharehouseService sharehouseService;
-    private final MemberInfoService memberInfoService;
+    private final MemberFindService memberFindService;
     private final ChatRoomFindService chatRoomFindService;
 
     @Transactional
     public ChatRoomCreateResponse createChatRoom(Long memId, Long shrId) {
-        Member sender = memberInfoService.findByMemId(memId);
+        Member sender = memberFindService.findByMemId(memId);
         Sharehouse sharehouse = sharehouseService.findSharehouseByShrId(shrId);
         Member receiver = sharehouse.getMember();
 
@@ -72,7 +72,7 @@ public class ChatRoomService {
     }
 
     public List<ChatRoomListResponse> getChatRoomList(Long memId, int pageSize, Long lastChatRoomId) {
-        Member member = memberInfoService.findByMemId(memId);
+        Member member = memberFindService.findByMemId(memId);
         List<ChatRoomListQueryProjection> chatRooms = memberChatRoomRepository.findChatRoomsByMemId(memId);
 
         List<ChatRoomListResponse> chatRoomList = chatRooms.stream()

@@ -4,7 +4,7 @@ import com.gaseng.checklist.domain.Checklist;
 import com.gaseng.checklist.dto.ChecklistResponse;
 import com.gaseng.checklist.repository.ChecklistRepository;
 import com.gaseng.member.domain.Member;
-import com.gaseng.member.service.MemberInfoService;
+import com.gaseng.member.service.MemberFindService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ChecklistService {
     private final ChecklistRepository checklistRepository;
-    private final MemberInfoService memberInfoService;
+    private final MemberFindService memberFindService;
 
     public Long create(Long memId, Checklist checklist) {
-        Member member = memberInfoService.findByMemId(memId);
+        Member member = memberFindService.findByMemId(memId);
 
         checklist = Checklist.builder()
                 .member(member)
@@ -34,7 +34,7 @@ public class ChecklistService {
     }
 
     public Long update(Long memId, Checklist updateChecklist) {
-        Member member = memberInfoService.findByMemId(memId);
+        Member member = memberFindService.findByMemId(memId);
         Checklist checklist = checklistRepository.findByMember(member);
 
         checklist.update(updateChecklist);
@@ -44,7 +44,7 @@ public class ChecklistService {
     }
 
 	public ChecklistResponse get(Long memId) {
-        Member member = memberInfoService.findByMemId(memId);
+        Member member = memberFindService.findByMemId(memId);
 		Checklist checklist = checklistRepository.findByMember(member);
 
 		return new ChecklistResponse(

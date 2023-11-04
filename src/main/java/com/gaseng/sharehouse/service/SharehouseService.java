@@ -6,7 +6,7 @@ import com.gaseng.file.repository.FileRepository;
 import com.gaseng.file.repository.ShareFileRepository;
 import com.gaseng.global.exception.BaseException;
 import com.gaseng.member.domain.Member;
-import com.gaseng.member.service.MemberInfoService;
+import com.gaseng.member.service.MemberFindService;
 import com.gaseng.sharehouse.domain.Sharehouse;
 import com.gaseng.sharehouse.domain.SharehouseStatus;
 import com.gaseng.sharehouse.dto.SharehouseListResponse;
@@ -34,7 +34,7 @@ public class SharehouseService {
 	private final ShareFileRepository shareFileRepository;
     private final SharehouseImageService sharehouseImageService;
 	private final FileRepository fileRepository;
-	private final MemberInfoService memberInfoService;
+	private final MemberFindService memberFindService;
 
     public SharehouseResponse get(Long shrId) {
 		Sharehouse sharehouse = findSharehouseByShrId(shrId);
@@ -82,7 +82,7 @@ public class SharehouseService {
 	}
     
     public Long create(Long memId, MultipartFile poster, SharehouseRequest request) throws IOException {
-		Member member = memberInfoService.findByMemId(memId);
+		Member member = memberFindService.findByMemId(memId);
 		Sharehouse sharehouse = Sharehouse.builder()
         		.member(member)
                 .shrTitle(request.shrTitle())
@@ -147,12 +147,12 @@ public class SharehouseService {
 
 
 	public Slice<SharehouseListResponse> mySharehouse(Long memId, Pageable pageable) {
-		Member member = memberInfoService.findByMemId(memId);
+		Member member = memberFindService.findByMemId(memId);
 		return sharehouseRepository.findByMemberOrderByShrIdDesc(member, pageable);
 	}
 	
 	public List<SharehouseListResponse> getMySharehouse(Long memId) {
-		Member member = memberInfoService.findByMemId(memId);
+		Member member = memberFindService.findByMemId(memId);
 		List<Sharehouse> list = sharehouseRepository.findByMember(member);
 		List<SharehouseListResponse> responses = new ArrayList<SharehouseListResponse>();
 		for (Sharehouse sharehouse : list) {

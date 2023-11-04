@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class MemberInfoService {
+public class MemberFindService {
     private final MemberRepository memberRepository;
 
     public Member findByMemId(Long id) {
