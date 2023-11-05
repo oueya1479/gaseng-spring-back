@@ -7,7 +7,7 @@ import com.gaseng.global.security.dto.UserDetailsDto;
 import com.gaseng.jwt.util.JwtTokenProvider;
 import com.gaseng.member.domain.Member;
 import com.gaseng.member.exception.MemberErrorCode;
-import com.gaseng.member.service.MemberInfoService;
+import com.gaseng.member.service.MemberFindService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +25,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
-    private final MemberInfoService memberInfoService;
+    private final MemberFindService memberFindService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -37,7 +37,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             if (jwtTokenProvider.validateToken(token)) {
                 Long memId = jwtTokenProvider.getId(token);
-                Member member = memberInfoService.findByMemId(memId);
+                Member member = memberFindService.findByMemId(memId);
 
                 if (member != null) {
                     CustomUserDetails customUserDetails = new CustomUserDetails(new UserDetailsDto(member));
