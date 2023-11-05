@@ -153,7 +153,8 @@ public class SharehouseService {
 	
 	public List<SharehouseListResponse> getMySharehouse(Long memId) {
 		Member member = memberFindService.findByMemId(memId);
-		List<Sharehouse> list = sharehouseRepository.findByMember(member);
+		List<Sharehouse> list = sharehouseRepository.findByMemberOrderByCreatedDateDesc(member);
+
 		List<SharehouseListResponse> responses = new ArrayList<SharehouseListResponse>();
 		for (Sharehouse sharehouse : list) {
 			responses.add(

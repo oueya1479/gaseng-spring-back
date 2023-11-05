@@ -62,7 +62,7 @@ public class SharehouseApiController {
     @DeleteMapping(value = "")
     public BaseResponse<Long> delete(
             @ExtractPayload Long memId,
-            @Valid SharehouseDeleteRequest request
+            @RequestBody @Valid SharehouseDeleteRequest request
     ) {
         return new BaseResponse<>(sharehouseService.deleteSharehouse(memId, request.id()));
     }
