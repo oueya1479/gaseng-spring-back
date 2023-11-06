@@ -2,7 +2,7 @@ package com.gaseng.chat.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public record ChatRoomResponse(
+public record ChatRoomCreateResponse(
         @Schema(description = "chat_room id (index)", example = "1")
         Long chatRoomId,
 
