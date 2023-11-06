@@ -9,6 +9,7 @@ import com.gaseng.checklist.domain.CheckType;
 
 public record SharehouseDetailResponse (
         Long id,
+        Long memId,
         String name,
         CheckCigarette cigarette,
         CheckSleepingHabit habit,
