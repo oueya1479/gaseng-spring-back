@@ -46,6 +46,7 @@ public class SharehouseService {
     	
 		return new SharehouseDetailResponse(
 				shrId,
+				sharehouse.getMember().getMemId(),
 				sharehouse.getMember().getMemName(),
 				sharehouse.getMember().getChecklist().getChkCigarette(),
 				sharehouse.getMember().getChecklist().getChkSleepingHabit(),
