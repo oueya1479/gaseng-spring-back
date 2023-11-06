@@ -58,6 +58,7 @@ public class MemberService {
 
         return new LoginResponse(
                 member.getMemId(),
+                member.getMemName(),
                 member.getMemEmail().getValue(),
                 accessToken,
                 refreshToken,

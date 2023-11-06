@@ -5,6 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record LoginResponse(
         @Schema(description = "member id (index)", example = "1")
         Long memId,
+        
+        @Schema(description = "member name", example = "햄뿡이")
+        String memName,
 
         @Schema(description = "member email", example = "example@gmail.com")
         String email,

@@ -52,7 +52,8 @@ public class ChatRoomService {
         );
     }
 
-    public ChatRoomEnterResponse enterChatRoom(Long chatRoomId) {
+    public ChatRoomEnterResponse enterChatRoom(Long memId, Long chatRoomId) {
+        chatRoomFindService.findByMemIdAndChatRoomId(memId, chatRoomId);
         ChatRoom chatRoom = chatRoomFindService.findByChatRoomId(chatRoomId);
 
         return new ChatRoomEnterResponse(
@@ -63,8 +64,10 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public Long updateMessage(Long chatRoomId, String message) {
+    public Long updateMessage(Long memId, Long chatRoomId, String message) {
+        chatRoomFindService.findByMemIdAndChatRoomId(memId, chatRoomId);
         ChatRoom chatRoom = chatRoomFindService.findByChatRoomId(chatRoomId);
+
         validateActiveChatRoom(chatRoom);
         chatRoom.updateMessage(message);
 
@@ -76,7 +79,7 @@ public class ChatRoomService {
         List<ChatRoomListQueryProjection> chatRooms = memberChatRoomRepository.findChatRoomsByMemId(memId);
 
         List<ChatRoomListResponse> chatRoomList = chatRooms.stream()
-                .map(chatRoom -> filterMemberAndFormatTime(member, chatRoom))
+                .map(chatRoom -> mapChatRoomToResponse(member, chatRoom))
                 .collect(Collectors.toList());
 
         int lastIndex = getLastIndex(chatRoomList, lastChatRoomId);
@@ -107,7 +110,7 @@ public class ChatRoomService {
         }
     }
 
-    private ChatRoomListResponse filterMemberAndFormatTime(Member member, ChatRoomListQueryProjection chatRoom) {
+    private ChatRoomListResponse mapChatRoomToResponse(Member member, ChatRoomListQueryProjection chatRoom) {
         String partnerNickname = filterPartnerNickname(member, chatRoom);
         String formattedTime = formatModifiedDate(chatRoom);
 
