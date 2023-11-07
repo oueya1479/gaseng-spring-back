@@ -9,6 +9,9 @@ public record LoginResponse(
         @Schema(description = "member name", example = "햄뿡이")
         String memName,
 
+        @Schema(description = "member nicknmae", example = "닉네임")
+        String nickname,
+
         @Schema(description = "member email", example = "example@gmail.com")
         String email,
 
