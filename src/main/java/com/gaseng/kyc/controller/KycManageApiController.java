@@ -42,7 +42,7 @@ public class KycManageApiController {
 	
 	@Operation(summary = "kyc 저장", description = "kyc를 저장합니다.")
 	@PostMapping("")
-	public BaseResponse<Long> save(@RequestParam Long kycrId, @RequestBody @Valid KycSaveRequest request) {
+	public BaseResponse<Long> save(@RequestParam Long kycrId, @RequestBody @Valid KycSaveRequest request) throws Exception {
 		return new BaseResponse<>(kycManageService.save(kycrId, request));
 	}
 	

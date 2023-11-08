@@ -74,3 +74,11 @@ coolsms:
     key: ${COOL_KEY}
     secret: ${COOL_SECRET}
     phone: ${COOL_PHONE}
+
+metamask:
+  WALLET_ADDRESS: ${WALLET_ADDRESS}
+  CONTRACT_ADDRESS: ${CONTRACT_ADDRESS}
+  PRIVATE_KEY: ${WALLET_PRIVATE_KEY}
+
+infura:
+  API_URL: ${INFURA_APIR_URL}

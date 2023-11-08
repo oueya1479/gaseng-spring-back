@@ -30,6 +30,7 @@ public class KycManageService {
 	private final KycRepository kycRepository;
 	private final KycRequireRepository kycRequireRepository;
 	private final KycNoticeRepository kycNoticeRepository;
+	private final KycInterface kycInterface;
 	
 	public static int STATUS_ACTIVE = 0;
 	public static int STATUS_INACTIVE = 1;
@@ -56,7 +57,7 @@ public class KycManageService {
 	}
 
 	@Transactional
-	public Long save(Long kycrId, KycSaveRequest request) {
+	public Long save(Long kycrId, KycSaveRequest request) throws Exception {
 		
 		// KycRequire 객체 가져오기
 		KycRequire entity = kycRequireRepository.findById(kycrId)
@@ -74,7 +75,13 @@ public class KycManageService {
 		} else if (request.status() == KycNoticeStatus.REJECT) {
 			member.setStatus(MemberStatus.REJECT);
 		} else if (request.status() == KycNoticeStatus.APPROVE){
-			saveKyc(member);
+			Long id = saveKyc(member);
+			kycInterface.setKyc(
+					id, 
+					entity.getKycrName(), 
+					entity.getKycrBirth().toString(), 
+					entity.getKycrAddress(), 
+					entity.getKycrJob().getValue());
 			member.setStatus(MemberStatus.APPROVE);
 		}
 		
@@ -86,16 +93,14 @@ public class KycManageService {
 		
 	}
 	
-	private void saveKyc(Member member) {
+	private Long saveKyc(Member member) {
 		
-		// TODO: blockchain address 지정하는 부분
 		String address = "";
 		Kyc kyc = Kyc.builder()
 				.member(member)
-				.kycAddress(address)
 				.build();
 		
-		kycRepository.save(kyc);
+		return kycRepository.save(kyc).getKycId();
 		
 	}
 

@@ -21,11 +21,8 @@ public class Kyc {
     @JoinColumn(name = "mem_id", nullable = false)
     private Member member;
 
-    private String kycAddress;
-    
     @Builder
-    Kyc(Member member, String kycAddress) {
+    Kyc(Member member) {
     	this.member = member;
-    	this.kycAddress = kycAddress;
     }
 }
