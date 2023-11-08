@@ -75,9 +75,9 @@ public class KycManageService {
 		} else if (request.status() == KycNoticeStatus.REJECT) {
 			member.setStatus(MemberStatus.REJECT);
 		} else if (request.status() == KycNoticeStatus.APPROVE){
-			Long id = saveKyc(member);
+			saveKyc(member);
 			kycInterface.setKyc(
-					id, 
+					member.getMemId(), 
 					entity.getKycrName(), 
 					entity.getKycrBirth().toString(), 
 					entity.getKycrAddress(), 
@@ -93,14 +93,12 @@ public class KycManageService {
 		
 	}
 	
-	private Long saveKyc(Member member) {
+	private void saveKyc(Member member) {
 		
 		String address = "";
 		Kyc kyc = Kyc.builder()
 				.member(member)
 				.build();
-		
-		return kycRepository.save(kyc).getKycId();
 		
 	}
 
