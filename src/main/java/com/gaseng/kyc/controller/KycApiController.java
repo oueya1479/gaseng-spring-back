@@ -29,7 +29,7 @@ public class KycApiController {
 	private final KycService kycService;
 
 	@Operation(summary = "kyc 제출", description = "사용자가 kyc 인증 과정을 끝내고 제출합니다.")
-	@PostMapping("/sumbit")
+	@PostMapping("/submit")
 	public BaseResponse<Long> submit(@ExtractPayload Long memId, @RequestBody @Valid KycSubmitRequest request) throws IOException {
 		return new BaseResponse<>(kycService.submit(memId, request));
 	}

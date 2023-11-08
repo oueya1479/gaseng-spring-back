@@ -1,7 +1,7 @@
 package com.gaseng.kyc.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +15,7 @@ public record KycSubmitRequest (
 		@Schema(description = "이름 (name)", example = "김동헌")
 		String name,
 		@Schema(description = "생일 (birth)", example = "1998-03-16T00:00:00")
-		LocalDate birth,
+		String birth,
 		@Schema(description = "주소 (address)", example = "경기도 성남시")
 		String address,
 		@Schema(description = "세부 주소 (detail)", example = "111호")
@@ -26,10 +26,13 @@ public record KycSubmitRequest (
 		MultipartFile face
 ) {
 	public KycRequire toKycRequire(Member member, String cardImagePath, String faceImagePath) {
+        String pattern = "yyyy-MM-dd";
+        LocalDate localDate = convertStringToLocalDate(birth, pattern);
+        
 		return KycRequire.builder()
 				.member(member)
 				.kycrName(name)
-				.kycrBirth(birth)
+				.kycrBirth(localDate)
 				.kycrAddress(address)
 				.kycrAddressDetail(detail)
 				.kycrJob(job)
@@ -37,4 +40,9 @@ public record KycSubmitRequest (
 				.kycrFace(faceImagePath)
 				.build();
 	}
+	
+	public static LocalDate convertStringToLocalDate(String dateString, String pattern) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return LocalDate.parse(dateString, formatter);
+    }
 }
