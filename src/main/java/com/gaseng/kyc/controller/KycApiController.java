@@ -1,6 +1,7 @@
 package com.gaseng.kyc.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
 import com.gaseng.kyc.dto.Customer;
+import com.gaseng.kyc.dto.KycNotificationResponse;
 import com.gaseng.kyc.dto.KycSubmitRequest;
 import com.gaseng.kyc.service.KycInterface;
 import com.gaseng.kyc.service.KycService;
@@ -40,6 +42,12 @@ public class KycApiController {
 	@GetMapping("/evm")
 	public BaseResponse<Customer> get(@RequestParam Long id) throws Exception {
 		return new BaseResponse<>(kycInterface.getKyc(id));
+	}
+	
+	@Operation(summary = "kyc 요청 조회", description = "kyc 요청 건에 대한 관리자의 답변을 조회합니다.")
+	@GetMapping("/notification")
+	public BaseResponse<List<KycNotificationResponse>> getNotification(@ExtractPayload Long memId) {
+		return new BaseResponse<>(kycService.getNotification(memId));
 	}
 	
 }
