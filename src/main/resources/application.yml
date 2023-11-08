@@ -81,4 +81,4 @@ metamask:
   PRIVATE_KEY: ${WALLET_PRIVATE_KEY}
 
 infura:
-  API_URL: ${INFURA_APIR_URL}
+  API_URL: ${INFURA_API_URL}
