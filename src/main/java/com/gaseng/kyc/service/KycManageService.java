@@ -100,6 +100,8 @@ public class KycManageService {
 				.member(member)
 				.build();
 		
+		kycRepository.save(kyc);
+		
 	}
 
 }
