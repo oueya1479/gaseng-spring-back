@@ -67,12 +67,12 @@ public class ScrapService {
     }
 
     @Transactional
-    public Long delete(Long memId, Long scrapId){
-        validateIsExistsScrapByMemIdAndScrapId(memId, scrapId);
+    public Long delete(Long memId, Long shrId){
+        validateIsExistsScrapByMemIdAndShrId(memId, shrId);
 
-        scrapRepository.deleteById(scrapId);
+        scrapRepository.deleteById(shrId);
 
-        return scrapId;
+        return shrId;
     }
 
     private int getLastIndex(List<SharehouseListResponse> scrapLists, Long lastShrId) {
@@ -102,8 +102,8 @@ public class ScrapService {
         }
     }
 
-    private void validateIsExistsScrapByMemIdAndScrapId(Long memId, Long scrapId) {
-        if (!scrapRepository.existsByMemberMemIdAndScrapId(memId, scrapId)) {
+    private void validateIsExistsScrapByMemIdAndShrId(Long memId, Long shrId) {
+        if (!scrapRepository.existsByMemberMemIdAndShrId(memId, shrId)) {
             throw BaseException.type(ScrapErrorCode.SCRAP_NOT_FOUND);
         }
     }
