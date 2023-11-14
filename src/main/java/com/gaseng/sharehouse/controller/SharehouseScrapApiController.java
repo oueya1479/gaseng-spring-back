@@ -9,10 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +31,27 @@ public class SharehouseScrapApiController {
             @RequestParam(value = "index", defaultValue = "-1", required = false) Long lastScrapId
     ) {
         return new BaseResponse<>(scrapService.getAll(memId, pageSize, lastScrapId));
+    }
+
+
+    @PreAuthorize("hasRole('USER')")
+    @Operation(summary = "스크랩 등록", description = "사용자가 스크랩 등록을 합니다.")
+    @PostMapping(value = "/sharehouse/{shrId}")
+    public BaseResponse<Long> create(
+            @ExtractPayload Long memId,
+            @PathVariable Long shrId
+    ) {
+        return new BaseResponse<>(scrapService.create(memId, shrId));
+    }
+
+
+    @PreAuthorize("hasRole('USER')")
+    @Operation(summary = "스크랩 취소", description = "사용자가 스크랩을 취소합니다.")
+    @DeleteMapping(value = "/{scrapId}")
+    public BaseResponse<Long> delete(
+            @ExtractPayload Long memId,
+            @PathVariable Long scrapId
+    ) {
+        return new BaseResponse<>(scrapService.delete(memId, scrapId));
     }
 }
