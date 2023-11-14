@@ -12,6 +12,7 @@ import com.gaseng.kyc.dto.KycSaveRequest;
 import com.gaseng.kyc.exception.KycErrorCode;
 import com.gaseng.kyc.repository.CriminalRecordRepository;
 import com.gaseng.kyc.repository.KycNoticeRepository;
+import com.gaseng.kyc.repository.KycRepository;
 import com.gaseng.kyc.repository.KycRequireRepository;
 import com.gaseng.member.domain.Member;
 import com.gaseng.member.domain.MemberStatus;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class KycManageService {
+	private final KycRepository kycRepository;
 	private final KycRequireRepository kycRequireRepository;
 	private final KycNoticeRepository kycNoticeRepository;
 	private final KycInterface kycInterface;
@@ -114,7 +116,8 @@ public class KycManageService {
 		Kyc kyc = Kyc.builder()
 				.member(member)
 				.build();
-		
+
+		kycRepository.save(kyc);
 	}
 
 	private void validateIsExistsMember(String kycrName, String memPhone) {
