@@ -32,6 +32,17 @@ public class SharehouseScrapApiController {
     ) {
         return new BaseResponse<>(scrapService.getAll(memId, pageSize, lastScrapId));
     }
+    
+    
+    @PreAuthorize("hasRole('USER')")
+    @Operation(summary = "스크랩 조회", description = "사용자가 해당 쉐어하우스에 스크랩을 했는지 확인합니다.")
+    @GetMapping(value = "/sharehouse/{shrId}")
+    public BaseResponse<Boolean> isScrap(
+            @ExtractPayload Long memId,
+            @PathVariable Long shrId
+    ) {
+        return new BaseResponse<>(scrapService.isExistsScrapByMemIdAndShrId(memId, shrId));
+    }
 
 
     @PreAuthorize("hasRole('USER')")
