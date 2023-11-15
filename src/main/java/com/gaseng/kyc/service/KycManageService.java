@@ -118,7 +118,6 @@ public class KycManageService {
 				.build();
 		
 		kycRepository.save(kyc);
-		
 	}
 
 	private void validateIsExistsMember(String kycrName, String memPhone) {

@@ -47,11 +47,11 @@ public class SharehouseScrapApiController {
 
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "스크랩 취소", description = "사용자가 스크랩을 취소합니다.")
-    @DeleteMapping(value = "/{scrapId}")
+    @DeleteMapping(value = "/sharehouse/{shrId}")
     public BaseResponse<Long> delete(
             @ExtractPayload Long memId,
-            @PathVariable Long scrapId
+            @PathVariable Long shrId
     ) {
-        return new BaseResponse<>(scrapService.delete(memId, scrapId));
+        return new BaseResponse<>(scrapService.delete(memId, shrId));
     }
 }
