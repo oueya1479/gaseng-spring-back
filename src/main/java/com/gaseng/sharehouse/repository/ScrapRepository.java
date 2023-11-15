@@ -11,6 +11,6 @@ public interface ScrapRepository extends JpaRepository<Scrap,Long> {
 
     List<Scrap> findByMemberOrderByScrapIdDesc(Member member);
     boolean existsByMemberAndSharehouse(Member member, Sharehouse share);
-    boolean existsByMemberMemIdAndShrId(Long memId, Long shrId);
+    boolean existsByMemberMemIdAndSharehouseShrId(Long memId, Long shrId);
 
 }
