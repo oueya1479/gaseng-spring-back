@@ -68,9 +68,9 @@ public class ScrapService {
 
     @Transactional
     public Long delete(Long memId, Long shrId){
-        validateIsExistsScrapByMemIdAndShrId(memId, shrId);
+    	Scrap scrap = findByMemberMemIdAndSharehouseShrId(memId, shrId);
 
-        scrapRepository.deleteById(shrId);
+        scrapRepository.deleteById(scrap.getScrapId());
 
         return shrId;
     }
@@ -110,5 +110,10 @@ public class ScrapService {
 
 	public Boolean isExistsScrapByMemIdAndShrId(Long memId, Long shrId) {
 		return scrapRepository.existsByMemberMemIdAndSharehouseShrId(memId, shrId);
+	}
+	
+	public Scrap findByMemberMemIdAndSharehouseShrId(Long memId, Long shrId) {
+		return scrapRepository.findByMemberMemIdAndSharehouseShrId(memId, shrId)
+			.orElseThrow(() -> BaseException.type(ScrapErrorCode.SCRAP_NOT_FOUND));
 	}
 }
