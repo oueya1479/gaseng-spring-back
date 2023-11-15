@@ -103,7 +103,7 @@ public class ScrapService {
     }
 
     private void validateIsExistsScrapByMemIdAndShrId(Long memId, Long shrId) {
-        if (!scrapRepository.existsByMemberMemIdAndShrId(memId, shrId)) {
+        if (!scrapRepository.existsByMemberMemIdAndSharehouseShrId(memId, shrId)) {
             throw BaseException.type(ScrapErrorCode.SCRAP_NOT_FOUND);
         }
     }
