@@ -107,4 +107,8 @@ public class ScrapService {
             throw BaseException.type(ScrapErrorCode.SCRAP_NOT_FOUND);
         }
     }
+
+	public Boolean isExistsScrapByMemIdAndShrId(Long memId, Long shrId) {
+		return scrapRepository.existsByMemberMemIdAndSharehouseShrId(memId, shrId);
+	}
 }
