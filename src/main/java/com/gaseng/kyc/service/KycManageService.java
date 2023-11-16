@@ -101,7 +101,7 @@ public class KycManageService {
 		KycRequire kycRequire = kycRequireRepository.findById(kycrId)
 				.orElseThrow(() -> BaseException.type(KycErrorCode.KYC_REQUIRE_NOT_FOUND));
 
-		String kycrName = kycRequire.getKycrName();
+		String kycrName = kycRequire.getMember().getMemName();
 		String memPhone = kycRequire.getMember().getMemPhone();
 
 		validateIsExistsMember(kycrName, memPhone);
