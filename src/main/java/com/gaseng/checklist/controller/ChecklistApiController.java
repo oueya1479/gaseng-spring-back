@@ -20,7 +20,6 @@ import javax.validation.Valid;
 public class ChecklistApiController {
     private final ChecklistService checklistService;
 
-    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "체크리스트 생성", description = "사용자가 체크리스트를 등록합니다.")
     @PostMapping(value = "")
     public BaseResponse<Long> create(@RequestParam Long memId, @RequestBody @Valid ChecklistRequest request){
