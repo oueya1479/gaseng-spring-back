@@ -178,4 +178,4 @@ Gaseng은 IOS, Android 기반으로 만들어진 Application이지만 Firebase�
 
 ### Blockchain transaction 속도 테스트
 
-블록 시간은 블록이 만들어지는데 걸리는 시간을 의미합니다. 이는 네트워크마다 어떤 방식을 택하고 있는지에 따라 다릅니다. 이 프로젝트는 Ethereum Network를 사용하고 있으며 KYC 데이터를 저장하는 시간 측정 결과 대략 8~9초의 시간이 걸립니다. 이에 시간을 단축할 방법을 찾아보고자 Network별로 특성을 조사했으며 Polygon(6초), Avalanche(2~3초), TON(1~2초)라는 결과를 확인했습니다. Ethereum에서 사용하는 Solidity의 확장성이 가장 컸기 때문에 Ethereum을 사용했지만, 속도를 우선시하는 Application에서는 Avalanche및 TON을 사용해봐도 좋을 것 같습니다.
+블록 시간은 블록이 만들어지는데 걸리는 시간을 의미합니다. 이는 네트워크마다 어떤 방식을 택하고 있는지에 따라 다릅니다. 이 프로젝트는 Ethereum Network를 사용하고 있으며 KYC 데이터를 저장하는 시간 측정 결과 대략 9초의 시간이 걸립니다. 이에 시간을 단축할 방법을 찾아보고자 Network별로 특성을 조사했으며 Polygon(6초), Avalanche(2~3초), TON(1~2초)라는 결과를 확인했습니다. Ethereum에서 사용하는 Solidity의 확장성이 가장 컸기 때문에 Ethereum을 사용했지만, 속도를 우선시하는 Application에서는 Avalanche및 TON을 사용해봐도 좋을 것 같습니다.
